@@ -12,8 +12,6 @@
 
 #include "philo_lib.h"
 
-int		is_number(const char *str);
-
 int	check_input(int ac, char *av[])
 {
 	int	i;

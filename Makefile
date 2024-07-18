@@ -1,4 +1,4 @@
-CC      = gcc
+CC      = cc
 CFLAGS  = -Werror -Wextra -Wall -g
 
 INC     = -I ./includes/ \
@@ -13,7 +13,10 @@ SRC         = 	ft_atoi.c \
 				philosophers.c \
 				procedure.c \
 				thread_utils.c	\
-				alive_checker.c
+				alive_checker.c  \
+				display_message.c \
+				get_current_time.c 
+
 SRCS        = $(addprefix $(SRC_PATH), $(SRC))
 
 # Objects
