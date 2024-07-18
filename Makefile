@@ -8,10 +8,12 @@ SRC         = 	ft_atoi.c \
 				ft_exit.c \
 				ft_usleep.c \
 				initiate.c \
-				input_tools.c \
+				check_input.c \
+				ft_is_number.c	\
 				philosophers.c \
 				procedure.c \
-				thread_utils.c
+				thread_utils.c	\
+				alive_checker.c
 SRCS        = $(addprefix $(SRC_PATH), $(SRC))
 
 # Objects
@@ -19,7 +21,7 @@ OBJ_PATH    = obj/
 OBJ         = $(SRC:.c=.o)
 OBJS        = $(addprefix $(OBJ_PATH), $(OBJ))
 
-NAME        = push_swap
+NAME        = philosophers
 
 GREEN = \033[0;32m
 RESET = \033[0m
@@ -46,7 +48,7 @@ $(NAME): $(OBJS)
 	@echo "$(GREEN)██╔═══╝ ██╔══██║██║██║     ██║   ██║╚════██║██║   ██║██╔═══╝ ██╔══██║██╔══╝  ██╔══██╗╚════██║$(RESET)	"
 	@echo "$(GREEN)██║     ██║  ██║██║███████╗╚██████╔╝███████║╚██████╔╝██║     ██║  ██║███████╗██║  ██║███████║$(RESET)	"
 	@echo "$(GREEN)╚═╝     ╚═╝  ╚═╝╚═╝╚══════╝ ╚═════╝ ╚══════╝ ╚═════╝ ╚═╝     ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚══════╝$(RESET)	"
-	@echo "               			2024/05/25 - ismherna@student.42.fr - 42 Madrid - Ismael Hernández		"
+	@echo "            		 2024/05/25 - ismherna@student.42.fr - 42 Madrid - Ismael Hernández						"
 
 clean:
 	@echo "Removing .o object files..."
