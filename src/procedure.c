@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   procedure.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apollo <apollo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 09:16:32 by ismherna          #+#    #+#             */
-/*   Updated: 2024/10/11 10:45:54 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/10/11 19:55:58 by apollo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ static void	p_eat(t_simulation *sim, t_philosopher *ph)
 	pthread_mutex_lock(&ph->pause);
 	ph->number_meals_eaten++;
 	pthread_mutex_unlock(&ph->pause);
-	pthread_mutex_unlock(&sim->fork_mutexes[ph->left_fork]);
 	pthread_mutex_unlock(&sim->fork_mutexes[ph->right_fork]);
+	pthread_mutex_unlock(&sim->fork_mutexes[ph->left_fork]);
 }
 
 static void	p_sleep(t_simulation *sim, t_philosopher *ph)
@@ -58,14 +58,26 @@ static int	take_forks(t_simulation *sim, t_philosopher *ph)
 	int	forks_taken;
 
 	forks_taken = 0;
-	if (ph->left_fork != -1)
+	if (ph->left_fork != -1 && &sim->fork_mutexes[ph->left_fork] < &sim->fork_mutexes[ph->right_fork])
 	{
 		pthread_mutex_lock(&sim->fork_mutexes[ph->left_fork]);
 		display_message(sim, ph, PHILOSOPHER_TOOK_FORK);
 		forks_taken++;
+		pthread_mutex_lock(&sim->fork_mutexes[ph->right_fork]);
+		display_message(sim, ph, PHILOSOPHER_TOOK_FORK);
+		forks_taken++;
 	}
-	pthread_mutex_lock(&sim->fork_mutexes[ph->right_fork]);
-	display_message(sim, ph, PHILOSOPHER_TOOK_FORK);
-	forks_taken++;
+	else
+	{
+		pthread_mutex_lock(&sim->fork_mutexes[ph->right_fork]);
+		display_message(sim, ph, PHILOSOPHER_TOOK_FORK);
+		forks_taken++;
+		if (ph->left_fork != -1)
+		{
+			pthread_mutex_lock(&sim->fork_mutexes[ph->left_fork]);
+			display_message(sim, ph, PHILOSOPHER_TOOK_FORK);
+			forks_taken++;
+		}
+	}
 	return (forks_taken);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   thread_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apollo <apollo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 09:16:15 by ismherna          #+#    #+#             */
-/*   Updated: 2024/10/11 10:41:58 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/10/11 20:04:00 by apollo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,12 @@
 
 static void	initialize_philosopher(t_philosopher *ph)
 {
-	pthread_t	thread;
-
 	if (ph->thread_id % 2 == 0)
 		ft_usleep(ph->pointer_program->eating_duration / 10);
 	ph->last_meal = get_current_time();
 	ph->time_remaining = ph->last_meal
 		+ ph->pointer_program->death_time_threshold;
-	if (pthread_create(&thread, NULL, alive_checker, ph) != 0)
+	if (pthread_create(&ph->processor_thread, NULL, alive_checker, ph) != 0)
 		return ;
 }
 

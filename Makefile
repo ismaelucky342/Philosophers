@@ -1,5 +1,5 @@
 CC      = gcc
-CFLAGS  = -Werror -Wextra -Wall -g
+CFLAGS  = -Werror -Wextra -Wall -g3 -pthread -fsanitize=thread
 
 INC     = -I ./includes/ \
 
