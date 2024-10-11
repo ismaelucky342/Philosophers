@@ -6,7 +6,7 @@
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 09:19:22 by ismherna          #+#    #+#             */
-/*   Updated: 2024/07/18 09:39:20 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/10/11 10:45:46 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define MAX_NUM_PHILOSOPHERS 200
 
 // STRUCTRES AREA
+
 typedef struct s_philosopher
 {
 	struct s_simulation	*pointer_program;
@@ -56,6 +57,7 @@ typedef struct s_simulation
 	long long			simulation_start_time;
 }						t_simulation;
 
+
 enum
 {
 	PHILOSOPHER_EAT,
@@ -67,15 +69,11 @@ enum
 
 // FUNCTIONS AREA
 long long				get_current_time(void);
-void					display_message(t_simulation *sim, t_philosopher *ph,
+void					display_message(t_simulation *sim, t_philosopher *philo,
 							int message_type);
-int						validate_input(int argc, char *argv[]);
 void					initialize_simulation(t_simulation *sim,
 							int num_philosophers, int argc, char *argv[]);
-void					*monitor_simulation(void *arg);
 void					*philosopher_thread(void *arg);
-void					execute_philosopher_actions(t_simulation *sim,
-							t_philosopher *ph);
 void					ft_usleep(int milliseconds);
 int						check_input(int argc, char *argv[]);
 void					ft_exit(t_simulation *p, int c);

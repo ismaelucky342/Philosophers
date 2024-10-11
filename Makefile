@@ -11,6 +11,7 @@ SRC         = 	ft_atoi.c \
 				check_input.c \
 				ft_is_number.c	\
 				philosophers.c \
+				display_message.c \
 				procedure.c \
 				thread_utils.c	\
 				alive_checker.c

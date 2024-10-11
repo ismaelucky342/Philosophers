@@ -6,13 +6,11 @@
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 09:17:57 by ismherna          #+#    #+#             */
-/*   Updated: 2024/07/18 09:40:10 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/10/11 10:35:40 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_lib.h"
-
-int		is_number(const char *str);
 
 int	check_input(int ac, char *av[])
 {
