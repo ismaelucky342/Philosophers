@@ -3,81 +3,80 @@
 /*                                                        :::      ::::::::   */
 /*   procedure.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apollo <apollo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/18 09:16:32 by ismherna          #+#    #+#             */
-/*   Updated: 2024/10/11 19:55:58 by apollo           ###   ########.fr       */
+/*   Created: 2024/10/12 12:02:08 by ismherna          #+#    #+#             */
+/*   Updated: 2024/10/12 13:34:20 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_lib.h"
+#include "../includes/philo_lib.h"
 
-static int	take_forks(t_simulation *sim, t_philosopher *ph);
-static void	p_eat(t_simulation *sim, t_philosopher *ph);
-static void	p_sleep(t_simulation *sim, t_philosopher *ph);
-static void	p_think(t_simulation *sim, t_philosopher *ph);
+void	ft_eat(t_philosophers *data, int fork_1, int fork_2);
+void	ft_sleep(t_philosophers *data);
+void	ft_think(t_philosophers *data);
+void	order_to_eat(t_philosophers *data, int left_fork, int right_fork);
 
-void	perform_actions(t_simulation *sim, t_philosopher *ph)
+void	*procedure(void *arg)
 {
-	if (take_forks(sim, ph) == 2)
+	t_philosophers	*data;
+	int				right_fork;
+	int				left_fork;
+
+	data = (t_philosophers *)arg;
+	left_fork = data->philosopher;
+	right_fork = (left_fork % data->parameters.number_philososphers) + 1;
+	if (left_fork % 2 != 0)
+		ft_usleep(50, data);
+	while (1)
 	{
-		p_eat(sim, ph);
-		p_sleep(sim, ph);
-		p_think(sim, ph);
-	}
-}
-
-static void	p_eat(t_simulation *sim, t_philosopher *ph)
-{
-	ph->last_meal = get_current_time();
-	pthread_mutex_lock(&ph->pause);
-	ph->time_remaining = ph->last_meal + sim->death_time_threshold;
-	pthread_mutex_unlock(&ph->pause);
-	display_message(sim, ph, PHILOSOPHER_EAT);
-	ft_usleep(sim->eating_duration);
-	pthread_mutex_lock(&ph->pause);
-	ph->number_meals_eaten++;
-	pthread_mutex_unlock(&ph->pause);
-	pthread_mutex_unlock(&sim->fork_mutexes[ph->right_fork]);
-	pthread_mutex_unlock(&sim->fork_mutexes[ph->left_fork]);
-}
-
-static void	p_sleep(t_simulation *sim, t_philosopher *ph)
-{
-	display_message(sim, ph, PHILOSOPHER_SLEEP);
-	ft_usleep(sim->sleeping_duration);
-}
-
-static void	p_think(t_simulation *sim, t_philosopher *ph)
-{
-	display_message(sim, ph, PHILOSOPHER_THINK);
-}
-
-static int	take_forks(t_simulation *sim, t_philosopher *ph)
-{
-	int	forks_taken;
-
-	forks_taken = 0;
-	if (ph->left_fork != -1 && &sim->fork_mutexes[ph->left_fork] < &sim->fork_mutexes[ph->right_fork])
-	{
-		pthread_mutex_lock(&sim->fork_mutexes[ph->left_fork]);
-		display_message(sim, ph, PHILOSOPHER_TOOK_FORK);
-		forks_taken++;
-		pthread_mutex_lock(&sim->fork_mutexes[ph->right_fork]);
-		display_message(sim, ph, PHILOSOPHER_TOOK_FORK);
-		forks_taken++;
-	}
-	else
-	{
-		pthread_mutex_lock(&sim->fork_mutexes[ph->right_fork]);
-		display_message(sim, ph, PHILOSOPHER_TOOK_FORK);
-		forks_taken++;
-		if (ph->left_fork != -1)
+		order_to_eat(data, left_fork, right_fork);
+		ft_sleep(data);
+		if (data->parameters.number_philososphers == 3)
+			ft_think(data);
+		else
+			ft_print(data, THINK);
+		pthread_mutex_lock(data->m_protect_dead);
+		if (*data->dead == 1)
 		{
-			pthread_mutex_lock(&sim->fork_mutexes[ph->left_fork]);
-			display_message(sim, ph, PHILOSOPHER_TOOK_FORK);
-			forks_taken++;
+			pthread_mutex_unlock(data->m_protect_dead);
+			return (NULL);
 		}
+		pthread_mutex_unlock(data->m_protect_dead);
 	}
-	return (forks_taken);
+}
+
+void	ft_eat(t_philosophers *data, int fork_1, int fork_2)
+{
+	pthread_mutex_lock(&data->fork[fork_1]);
+	ft_print(data, FORK);
+	pthread_mutex_lock(&data->fork[fork_2]);
+	ft_print(data, FORK);
+	ft_print(data, EAT);
+	ft_usleep(data->parameters.t_eat, data);
+	pthread_mutex_unlock(&data->fork[fork_2]);
+	pthread_mutex_unlock(&data->fork[fork_1]);
+}
+
+void	ft_sleep(t_philosophers *data)
+{
+	ft_print(data, SLEEP);
+	ft_usleep(data->parameters.t_sleep, data);
+}
+
+void	ft_think(t_philosophers *data)
+{
+	long	time;
+
+	time = (data->parameters.t_eat * 2) - data->parameters.t_sleep;
+	ft_usleep(time * 0.42, data);
+	ft_print(data, THINK);
+}
+
+void	order_to_eat(t_philosophers *data, int left_fork, int right_fork)
+{
+	if (left_fork == data->parameters.number_philososphers)
+		ft_eat(data, right_fork - 1, left_fork - 1);
+	else
+		ft_eat(data, left_fork - 1, right_fork - 1);
 }

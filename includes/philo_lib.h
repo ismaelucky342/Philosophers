@@ -5,82 +5,95 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/18 09:19:22 by ismherna          #+#    #+#             */
-/*   Updated: 2024/10/11 10:45:46 by ismherna         ###   ########.fr       */
+/*   Created: 2024/10/12 12:06:24 by ismherna          #+#    #+#             */
+/*   Updated: 2024/10/12 13:29:48 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_LIB_H
 # define PHILO_LIB_H
 
-// LIBRARIES
-# include <limits.h>
-# include <pthread.h>
+/*============================== LIBRARIES ================================*/
+
+# include <sys/time.h>
+# include <string.h>
+# include <pthread.h>//pthread mutex
 # include <stdio.h>
 # include <stdlib.h>
-# include <string.h>
-# include <sys/time.h>
 # include <unistd.h>
 
-// DEFINE AREA
-# define MAX_NUM_PHILOSOPHERS 200
+/*==============================PHILO ACTIONS==============================*/
 
-// STRUCTRES AREA
+# define MEXTRA 4
+# define FORK 1
+# define EAT 2
+# define SLEEP 3
+# define THINK 4
 
-typedef struct s_philosopher
+/*=================================COLORS==================================*/
+
+# define RESET   "\033[0m"
+# define RED     "\033[31m"
+# define GREEN   "\033[32m"
+# define YELLOW  "\033[33m"
+# define BLUE    "\033[34m"
+# define MAGENTA "\033[35m"
+# define CYAN    "\033[36m"
+# define WHITE   "\033[37m"
+# define BOLD    "\033[1m"
+# define UNDERLINE "\033[4m"
+
+/*================================STRUCUTRES===============================*/
+
+typedef struct s_mutex
 {
-	struct s_simulation	*pointer_program;
-	ssize_t				left_fork;
-	ssize_t				right_fork;
-	int					number_meals_eaten;
-	long long			last_meal;
-	long long			time_remaining;
-	pthread_t			processor_thread;
-	int					thread_id;
-	int					philo_eating;
-	pthread_mutex_t		pause;
-}						t_philosopher;
+	pthread_mutex_t	*mutex_fork;
+	pthread_mutex_t	*mextra;
+}	t_mutex;
 
-typedef struct s_simulation
+typedef struct s_input
 {
-	int					simulation_end_flag;
-	pthread_mutex_t		death_mutex;
-	size_t				number_of_philosophers;
-	t_philosopher		philosophers[MAX_NUM_PHILOSOPHERS];
-	long long			death_time_threshold;
-	long long			eating_duration;
-	pthread_mutex_t		meal_mutex;
-	pthread_mutex_t		output_mutex;
-	long long			sleeping_duration;
-	pthread_mutex_t		fork_mutexes[MAX_NUM_PHILOSOPHERS];
-	long long			required_meals;
-	long long			simulation_start_time;
-}						t_simulation;
+	int	meals;
+	int	t_die;
+	int	t_eat;
+	int	t_sleep;
+	int	number_philososphers;
+}	t_input;
 
-
-enum
+typedef struct s_philosophers
 {
-	PHILOSOPHER_EAT,
-	PHILOSOPHER_SLEEP,
-	PHILOSOPHER_DIE,
-	PHILOSOPHER_TOOK_FORK,
-	PHILOSOPHER_THINK
-};
+	long long		last_meal;
+	long long		init_time;
+	int				philosopher;
+	int				*dead;
+	int				*number_of_meals;
+	t_input			parameters;
+	pthread_mutex_t	*fork;
+	pthread_mutex_t	*m_protect_eat;
+	pthread_mutex_t	*m_protect_dead;
+	pthread_mutex_t	*m_protect_last_eat;
+	pthread_mutex_t	*m_protect_output;
+}	t_philosophers;
 
-// FUNCTIONS AREA
-long long				get_current_time(void);
-void					display_message(t_simulation *sim, t_philosopher *philo,
-							int message_type);
-void					initialize_simulation(t_simulation *sim,
-							int num_philosophers, int argc, char *argv[]);
-void					*philosopher_thread(void *arg);
-void					ft_usleep(int milliseconds);
-int						check_input(int argc, char *argv[]);
-void					ft_exit(t_simulation *p, int c);
-int						ft_atoi(char *s);
-void					input_error(void);
-void					perform_actions(t_simulation *sim, t_philosopher *ph);
-void					*alive_checker(void *p);
-int						ft_is_number(const char *str);
+
+/*================================FUNCTIONS=================================*/
+
+int			allocate(pthread_t **th, t_philosophers **info, t_mutex *mtx, t_input prms);
+int			ft_atoi(const char *str);
+int			ft_isdigit(int c);
+void		*procedure(void *arg);
+long long	gettime_ms(void);
+void		ft_usleep(long long wait, t_philosophers *data);
+void		*routine_monitor(void *arg);
+int			protect_dead(t_philosophers *data);
+int			checker_dead(t_philosophers *data);
+void		ft_print(t_philosophers *data, int action);
+void		ft_print_death(t_philosophers *data);
+int			check_args(char **argv);
+void		init_parameters(char **argv, t_input *arg, int argc);
+int			init_mutex(t_mutex *mutex, int n);
+int			ft_thread(pthread_t *th, t_philosophers *data);
+int			init_philosophers(t_philosophers *data, t_mutex mutex, t_input arg);
+int			clean_up(pthread_t *th, t_philosophers *info, t_mutex mutex, int n);
 
 #endif

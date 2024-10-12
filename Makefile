@@ -1,47 +1,51 @@
-CC      = gcc
-CFLAGS  = -Werror -Wextra -Wall -g3 -pthread -fsanitize=thread
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/10/12 12:05:38 by ismherna          #+#    #+#              #
+#    Updated: 2024/10/12 13:19:57 by ismherna         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-INC     = -I ./includes/ \
+G = \033[1;32m
+Y = \033[1;33m
+R = \033[0;31m
+NC = \033[0m
 
-SRC_PATH    = src/
-SRC         = 	ft_atoi.c \
-				ft_exit.c \
-				ft_usleep.c \
-				initiate.c \
-				check_input.c \
-				ft_is_number.c	\
-				philosophers.c \
-				display_message.c \
-				procedure.c \
-				thread_utils.c	\
-				alive_checker.c
-SRCS        = $(addprefix $(SRC_PATH), $(SRC))
+NAME = philosophers
 
-# Objects
-OBJ_PATH    = obj/
-OBJ         = $(SRC:.c=.o)
-OBJS        = $(addprefix $(OBJ_PATH), $(OBJ))
+# Rutas de los archivos fuente
+VPATH = src/utils/:src/
 
-NAME        = philosophers
+# Archivos fuente
+SRC = \
+    src/utils/allocate.c \
+    src/utils/checker_dead.c \
+    src/utils/cleanup.c \
+    src/utils/ft_atoi.c \
+    src/utils/ft_isdigit.c \
+    src/utils/ft_usleep.c \
+    src/utils/get_time.c \
+    src/init.c \
+    src/main.c \
+    src/output.c \
+    src/procedure.c \
+    src/protect_procedure.c \
+    src/thread.c 
 
-GREEN = \033[0;32m
-RESET = \033[0m
+OBJ_DIR = objects
 
+# Genera la lista de archivos objeto
+OBJ = $(patsubst %.c, $(OBJ_DIR)/%.o, $(SRC))
+
+CC = cc
+CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=address
+
+# Regla para construir el objetivo final
 all: $(NAME)
-
-$(OBJ_PATH)%.o: $(SRC_PATH)%.c | $(OBJ_PATH)
-	@$(CC) $(CFLAGS) -c $< -o $@ $(INC)
-
-$(OBJS): | $(OBJ_PATH)
-
-$(OBJ_PATH):
-	@mkdir -p $(OBJ_PATH)
-
-
-$(NAME): $(OBJS) 
-	@echo "Compiling $(NAME)..."
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(INC) -lm
-	@echo "$(NAME) ready."
 	@echo "															"	
 	@echo "$(GREEN)██████╗ ██╗  ██╗██╗██╗      ██████╗ ███████╗ ██████╗ ██████╗ ██╗  ██╗███████╗██████╗ ███████╗$(RESET)	"
 	@echo "$(GREEN)██╔══██╗██║  ██║██║██║     ██╔═══██╗██╔════╝██╔═══██╗██╔══██╗██║  ██║██╔════╝██╔══██╗██╔════╝$(RESET)	"
@@ -51,14 +55,36 @@ $(NAME): $(OBJS)
 	@echo "$(GREEN)╚═╝     ╚═╝  ╚═╝╚═╝╚══════╝ ╚═════╝ ╚══════╝ ╚═════╝ ╚═╝     ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚══════╝$(RESET)	"
 	@echo "            		 2024/05/25 - ismherna@student.42.fr - 42 Madrid - Ismael Hernández						"
 
+
+$(NAME): $(OBJ_DIR) $(OBJ)
+	@echo "$(Y)--------------------------------------- Compiling Philosophers ---------------------------------------$(NC)"
+	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+	@echo "$(G)----------------------------------- Philosophers Finished Compiling -----------------------------------$(NC)\n"
+	@echo "$(G)----------------------------------------------------------------------------------------------------$(NC)"
+	@echo "$(G)---------------------------------------- Philosophers Are Ready --------------------------------------$(NC)"
+	@echo "$(G)----------------------------------------------------------------------------------------------------$(NC)\n"
+
+$(OBJ_DIR):
+	@echo "$(R)---------------------------------- Object Directory Doesn't Exist ----------------------------------$(NC)"
+	@echo "$(Y)------------------------------------ Creating Objects Directory ------------------------------------$(NC)"
+	@mkdir -p $(OBJ_DIR)
+	@echo "$(G)-------------------------------------- Objects Directory Done --------------------------------------$(NC)"
+
+$(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
+	@mkdir -p $(dir $@)  # Esto garantiza que el directorio exista
+	@$(CC) $(CFLAGS) -c -o $@ $<
+	@printf "%-200s\r" ">Philosophers compiling: ""$(CC) $(CFLAGS) -c -o $@ $<"
+
 clean:
-	@echo "Removing .o object files..."
-	@rm -rf $(OBJ_PATH)
+	@rm -rf $(OBJ_DIR)
+	@echo "$(R)----------------------------------------- Objects  Cleaned -----------------------------------------$(NC)"
 
 fclean: clean
-	@echo "Removing $(NAME)..."
 	@rm -f $(NAME)
+	@echo "$(R)---------------------------------------- Philosophers Is Clean -------------------------------------\n$(NC)"
 
 re: fclean all
 
-.PHONY: all re clean fclean
+.DEFAULT_GOAL: all
+
+.PHONY: all clean fclean re

@@ -1,28 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_is_number.c                                     :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/18 09:36:42 by ismherna          #+#    #+#             */
-/*   Updated: 2024/07/18 09:37:46 by ismherna         ###   ########.fr       */
+/*   Created: 2024/10/12 12:33:13 by ismherna          #+#    #+#             */
+/*   Updated: 2024/10/12 13:21:28 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_lib.h"
+#include "../../includes/philo_lib.h"
 
-int	ft_is_number(const char *str)
+int	ft_isdigit(int c)
 {
-	if (!str || *str == '\0')
-		return (0);
-	if (*str == '-' || *str == '+')
-		str++;
-	while (*str)
-	{
-		if (*str < '0' || *str > '9')
-			return (0);
-		str++;
-	}
-	return (1);
+	return (c >= '0' && c <= '9');
 }

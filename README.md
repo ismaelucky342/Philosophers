@@ -6,7 +6,7 @@ This project implements a solution to the classic "Dining Philosophers Problem,"
 
 # Dining Philosophers Problem
 
-Five philosophers sit around a circular table, each with a plate of spaghetti in front of them. The spaghetti is so slippery that to eat it, a philosopher needs two forks (called "chopsticks" in this case). Between every two plates, there is a chopstick, meaning there are as many chopsticks as there are philosophers.
+Five philosophers sit around a circular table, each with a plate of spaghetti in front of them. The spaghetti is so slippery that to eat it, a philosopher needs two Fs (called "chopsticks" in this case). Between every two plates, there is a chopstick, meaning there are as many chopsticks as there are philosophers.
 
 A philosopher's life consists of alternating between thinking and eating. When a philosopher feels hungry, they try to pick up the left chopstick and, if successful, try to pick up the right one. If they manage to grab both chopsticks, they eat for a while, then put the chopsticks down and continue thinking.
 
@@ -33,12 +33,12 @@ The implementation ensures that philosophers do not enter a deadlock by efficien
 $> make 
 ```
 ```
-$> ./philosophers number_philosopher time_to_die time_to_eat time_to_sleep [number_of_time_each_philosophers_must_eat] arguments in square brackets are not required (number_of_time_each_philosophers_must_eat)
+$> ./philosophers number_philosopher time_D time_E time_S [number_of_time_each_philosophers_must_eat] arguments in square brackets are not required (number_of_time_each_philosophers_must_eat)
 ```
 - number_of_philosophers: The number of philosophers (and chopsticks) participating in the simulation.
-- time_to_die: Time in milliseconds a philosopher can go without eating before dying.
-- time_to_eat: Time in milliseconds a philosopher spends eating.
-- time_to_sleep: Time in milliseconds a philosopher spends sleeping after eating.
+- time_D: Time in milliseconds a philosopher can go without eating before dying.
+- time_E: Time in milliseconds a philosopher spends eating.
+- time_S: Time in milliseconds a philosopher spends sleeping after eating.
 - [number_of_times_each_philosopher_must_eat]: (Optional) The number of times each philosopher must eat before the program finishes. If not provided, the simulation continues indefinitely until the philosophers die.
 
 #### example: 

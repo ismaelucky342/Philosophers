@@ -1,22 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_usleep.c                                        :+:      :+:    :+:   */
+/*   checker_dead.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/18 09:18:17 by ismherna          #+#    #+#             */
-/*   Updated: 2024/07/18 09:31:27 by ismherna         ###   ########.fr       */
+/*   Created: 2024/10/12 12:59:00 by ismherna          #+#    #+#             */
+/*   Updated: 2024/10/12 13:21:19 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_lib.h"
+#include "../../includes/philo_lib.h"
 
-void	ft_usleep(int milliseconds)
+int	checker_dead(t_philosophers *data)
 {
-	long int	t;
-
-	t = get_current_time();
-	while (get_current_time() - t < milliseconds)
-		usleep(milliseconds / 10);
+	pthread_mutex_lock(data->m_protect_dead);
+	if (*data->dead == 1)
+	{
+		pthread_mutex_unlock(data->m_protect_dead);
+		return (1);
+	}
+	pthread_mutex_unlock(data->m_protect_dead);
+	return (0);
 }

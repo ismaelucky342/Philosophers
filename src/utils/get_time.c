@@ -1,30 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   get_time.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/18 09:18:28 by ismherna          #+#    #+#             */
-/*   Updated: 2024/07/18 09:39:06 by ismherna         ###   ########.fr       */
+/*   Created: 2024/10/12 12:50:26 by ismherna          #+#    #+#             */
+/*   Updated: 2024/10/12 13:21:34 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_lib.h"
+#include "../../includes/philo_lib.h"
 
-void	ft_exit(t_simulation *p, int c)
+long long	gettime_ms(void)
 {
-	size_t	i;
+	struct timeval	tv;
 
-	if (c)
-		exit(1);
-	while (i < p->number_of_philosophers)
-	{
-		pthread_mutex_lock(&p->philosophers[i].pause);
-		pthread_mutex_lock(&p->fork_mutexes[i]);
-		p->philosophers[i].pointer_program = NULL;
-		i++;
-	}
-	pthread_mutex_lock(&p->output_mutex);
-	return (exit(1));
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
