@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_time.c                                         :+:      :+:    :+:   */
+/*   ft_get_time.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/12 12:50:26 by ismherna          #+#    #+#             */
-/*   Updated: 2024/10/12 13:21:34 by ismherna         ###   ########.fr       */
+/*   Created: 2024/10/23 11:17:36 by ismherna          #+#    #+#             */
+/*   Updated: 2024/10/23 11:18:14 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/philo_lib.h"
+#include "../philo.h"
 
-long long	gettime_ms(void)
+long long	ft_get_time(void)
 {
 	struct timeval	tv;
 

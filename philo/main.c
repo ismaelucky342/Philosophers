@@ -5,12 +5,38 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/12 12:02:08 by ismherna          #+#    #+#             */
-/*   Updated: 2024/10/12 13:20:52 by ismherna         ###   ########.fr       */
+/*   Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#             */
+/*   Updated: 2024/10/23 11:11:58 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo_lib.h"
+#include "philo.h"
+
+static int	clean_up(pthread_t *th, t_global_info *info, t_mutex mutex, int n)
+{
+	int	i;
+
+	i = 0;
+	while (i < n)
+		pthread_mutex_destroy(&mutex.mutex_fork[i++]);
+	i = 0;
+	while (i < MUTEX_EXTRA)
+		pthread_mutex_destroy(&mutex.mutex_extra[i++]);
+	if (info)
+	{
+		if (info->dead)
+			free(info->dead);
+		if (info->number_eats)
+			free(info->number_eats);
+	}
+	free(th);
+	free(info);
+	if (mutex.mutex_fork)
+		free(mutex.mutex_fork);
+	if (mutex.mutex_extra)
+		free(mutex.mutex_extra);
+	return (0);
+}
 
 int	check_args(char **av)
 {
@@ -42,23 +68,23 @@ int	main(int argc, char **argv)
 {
 	pthread_t		*thread;
 	t_input			arguments;
-	t_philosophers	*info;
+	t_global_info	*info;
 	t_mutex			mutex;
 
 	if (argc < 5 || argc > 6)
 		return (printf("Invalid argument number\n"), 1);
 	if (check_args(argv) == -1)
 		return (printf("Invalid arguments\n"), 1);
-	init_parameters(argv, &arguments, argc);
+	init_params(argv, &arguments, argc);
 	memset(&mutex, 0, sizeof(t_mutex));
-	memset(&info, 0, sizeof(t_philosophers *));
-	if (allocate(&thread, &info, &mutex, arguments) != 0)
-		return (clean_up(thread, info, mutex, arguments.number_philososphers));
-	if (init_mutex(&mutex, arguments.number_philososphers) != 0)
-		return (clean_up(thread, info, mutex, arguments.number_philososphers));
-	if (init_philosophers(info, mutex, arguments) != 0)
-		return (clean_up(thread, info, mutex, arguments.number_philososphers));
-	ft_thread(thread, info);
-	clean_up(thread, info, mutex, arguments.number_philososphers);
+	memset(&info, 0, sizeof(t_global_info *));
+	if (ft_allocate(&thread, &info, &mutex, arguments) != 0)
+		return (clean_up(thread, info, mutex, arguments.total_philos));
+	if (init_mutex(&mutex, arguments.total_philos) != 0)
+		return (clean_up(thread, info, mutex, arguments.total_philos));
+	if (init_g_info(info, mutex, arguments) != 0)
+		return (clean_up(thread, info, mutex, arguments.total_philos));
+	ft_world(thread, info);
+	clean_up(thread, info, mutex, arguments.total_philos);
 	return (0);
 }

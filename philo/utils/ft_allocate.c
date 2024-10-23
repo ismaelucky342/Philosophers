@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   allocate.c                                         :+:      :+:    :+:   */
+/*   ft_allocate.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/12 12:39:01 by ismherna          #+#    #+#             */
-/*   Updated: 2024/10/12 13:24:10 by ismherna         ###   ########.fr       */
+/*   Created: 2024/10/22 21:39:05 by ismherna          #+#    #+#             */
+/*   Updated: 2024/10/22 21:41:07 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/philo_lib.h"
+#include "../philo.h"
 
-int	allocate(pthread_t **th, t_philosophers **info, t_mutex *mtx, t_input prms)
+int	ft_allocate(pthread_t **th, t_global_info **info, t_mutex *mtx, t_input prms)
 {
-	*th = (pthread_t *)malloc(sizeof(pthread_t) * (prms.number_philososphers
-				+ 1));
+	*th = (pthread_t *) malloc(sizeof(pthread_t) * (prms.total_philos + 1));
 	if (!*th)
 		return (printf("memory allocation error\n"), 1);
-	*info = (t_philosophers *)malloc(sizeof(t_philosophers)
-			* prms.number_philososphers);
+	*info = (t_global_info *) malloc(sizeof(t_global_info) * prms.total_philos);
 	if (!*info)
 		return (printf("memory allocation error\n"), 1);
-	mtx->mutex_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t)
-			* (prms.number_philososphers));
+	mtx->mutex_fork = (pthread_mutex_t *)
+		malloc(sizeof(pthread_mutex_t) * (prms.total_philos));
 	if (!mtx->mutex_fork)
 		return (printf("memory allocation error\n"), 1);
-	mtx->mextra = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * MEXTRA);
-	if (!mtx->mextra)
+	mtx->mutex_extra = (pthread_mutex_t *)
+		malloc(sizeof(pthread_mutex_t) * MUTEX_EXTRA);
+	if (!mtx->mutex_extra)
 		return (printf("memory allocation error\n"), 1);
 	return (0);
 }

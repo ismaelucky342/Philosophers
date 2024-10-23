@@ -1,25 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   checker_dead.c                                     :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/12 12:59:00 by ismherna          #+#    #+#             */
-/*   Updated: 2024/10/15 19:25:07 by ismherna         ###   ########.fr       */
+/*   Created: 2024/10/23 11:14:25 by ismherna          #+#    #+#             */
+/*   Updated: 2024/10/23 11:14:40 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/philo_lib.h"
+#include "../philo.h"
 
-int	checker_dead(t_philosophers *data)
+int	ft_isdigit(int c)
 {
-	pthread_mutex_lock(data->m_protect_dead);
-	if (*data->dead == 1)
-	{
-		pthread_mutex_unlock(data->m_protect_dead);
-		return (1);
-	}
-	pthread_mutex_unlock(data->m_protect_dead);
-	return (0);
+	return (c >= '0' && c <= '9');
 }

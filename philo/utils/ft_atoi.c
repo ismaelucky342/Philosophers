@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_usleep.c                                        :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/12 12:34:42 by ismherna          #+#    #+#             */
-/*   Updated: 2024/10/12 13:21:35 by ismherna         ###   ########.fr       */
+/*   Created: 2024/10/23 11:09:36 by ismherna          #+#    #+#             */
+/*   Updated: 2024/10/23 11:09:52 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/philo_lib.h"
+#include "../philo.h"
 
-void	ft_usleep(long long wait, t_philosophers *data)
+int	ft_atoi(const char *str)
 {
-	long long	init_time;
+	int		i;
+	int		num;
 
-	init_time = gettime_ms();
-	while (gettime_ms() < init_time + wait)
+	i = 0;
+	num = 0;
+	while (ft_isdigit(str[i]))
 	{
-		if (checker_dead(data) == 1)
-			return ;
-		usleep(100);
+		num = (num * 10) + (str[i] - '0');
+		i++;
 	}
+	return (num);
 }
