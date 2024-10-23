@@ -45,10 +45,6 @@ DEF_COLOR   = \033[0;39m
 CLEAR_LINE  = \033[2K
 MOVE_UP     = \033[1A
 
-#==========NAMES===============================================================#
-
-NAME		:= philo
-BONUS_NAME	:= philo_bonus
 
 #==========DIRECTORIES=======================================================#
 
@@ -56,9 +52,13 @@ INC 			:= inc/
 SRC_DIR 		:= src/
 OBJ_DIR 		:= obj/
 
-PHILO_DIR		:= philo/
-PHILO_BONUS_DIR	:= philo_bonus/
-UTILS_DIR		:= utils/
+PHILO_DIR		:= $(SRC_DIR)philo/
+PHILO_BONUS_DIR	:= $(SRC_DIR)philo_bonus/
+
+#==========NAMES===============================================================#
+
+NAME		:= philo
+BONUS_NAME	:= philo_bonus
 
 #==========COMMANDS============================================================#
 
@@ -70,64 +70,31 @@ LIB			:= ranlib
 MKDIR 		:= mkdir -p
 IFLAGS		:= -I$(INC)
 
-
-#==========SOURCES============================================================#
-
-FILES := main init_and_threads checker_dead monitoring_rutines output philo_rutines
-UTILS_FILES := ft_allocate ft_atoi ft_get_time ft_isdigit ft_usleep 
-
-#==========SOURCES=BONUS========================================================#
-
-BONUS_FILES := main init_and_threads monitoring_rutines checker_dead output philo_rutines
-
-#==========FILES==============================================================#
-
-SRC_FILES+=$(addprefix $(PHILO_DIR), $(FILES))
-SRC_FILES+=$(addprefix $(PHILO_DIR), $(addprefix $(UTILS_DIR), $(UTILS_FILES)))
-
-OBJS := $(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
-DEPS := $(addprefix $(OBJ_DIR), $(addsuffix .d, $(SRC_FILES)))
-SRCS := $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
-
-#==========FILES=BONUS========================================================#
-
-SRC_FILES_BONUS+=$(addprefix $(PHILO_BONUS_DIR), $(BONUS_FILES))
-SRC_FILES_BONUS+=$(addprefix $(PHILO_BONUS_DIR), $(addprefix $(UTILS_DIR), $(UTILS_FILES)))
-
-OBJS_BONUS := $(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES_BONUS)))
-SRCS_BONUS := $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES_BONUS)))
-DEPS_BONUS := $(addprefix $(OBJ_DIR), $(addsuffix .d, $(SRC_FILES_BONUS)))
-
 #==========RULES==============================================================#
 
 all: $(NAME)
 
 bonus: $(BONUS_NAME)
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c Makefile
-	@$(MKDIR) $(dir $@)	
-	@$(CC) $(CFLAGS) $(IFLAGS) -MP -MMD -c $< -o $@
+$(BONUS_NAME):
+	$(MAKE) -sC $(PHILO_BONUS_DIR)
+	cp $(PHILO_BONUS_DIR)$(BONUS_NAME) .
 
-$(OBJ_DIR)%.o: $(SRC_DIR)$(BONUS_DIR)%.c Makefile
-	@$(MKDIR) $(dir $@)	
-	@$(CC) $(CFLAGS) $(IFLAGS) -MP -MMD -c $< -o $@
-
-$(BONUS_NAME): $(OBJS_BONUS)
-	@$(CC) $(CFLAGS) $(OBJS_BONUS) -o $(BONUS_NAME)
-	@echo "$(BOLD_BLUE)[$(BRIGHT_CYAN)$(BONUS_NAME)$(DEF_COLOR)$(BOLD_BLUE)]$(BOLD_BLUE) compiled!$(DEF_COLOR)"
-	@echo "$(TURQUOISE)------------\n| Done! 👌 |\n------------$(DEF_COLOR)"
-
-$(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
-	@echo "$(BOLD_BLUE)[$(BRIGHT_CYAN)$(NAME)$(DEF_COLOR)$(BOLD_BLUE)] compiled!$(DEF_COLOR)"
-	@echo "$(TURQUOISE)------------\n| Done! 👌 |\n------------$(DEF_COLOR)"
+$(NAME):
+	$(MAKE) -sC $(PHILO_DIR)
+	cp $(PHILO_DIR)$(NAME) .
 
 clean:
-	@$(RM) -rf $(OBJ_DIR)
+	$(MAKE) clean -sC $(PHILO_DIR)
+	$(MAKE) clean -sC $(PHILO_BONUS_DIR)
 	@echo "$(CYAN)[$(NAME)]:\tobject files $(GREEN) => Cleaned!$(DEF_COLOR)"
 
 fclean: clean
-	@$(RM) -rf $(NAME) $(BONUS_NAME)
+	$(RM) $(NAME)
+	$(RM) $(BONUS_NAME)
+	$(MAKE) fclean -sC $(PHILO_DIR)
+	$(MAKE) fclean -sC $(PHILO_BONUS_DIR)
+	$(RM) $(OBJ_DIR)
 	@echo "$(CYAN)[$(NAME)]:\texec. files $(GREEN) => Cleaned!$(DEF_COLOR)"
 	
 
