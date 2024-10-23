@@ -6,7 +6,7 @@
 /*   By: apollo <apollo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#             */
-/*   Updated: 2024/10/23 12:44:03 by apollo           ###   ########.fr       */
+/*   Updated: 2024/10/23 13:36:15 by apollo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <unistd.h>
 # include <string.h>
 # include <sys/time.h>
+
 
 #define COLOR_RESET "\033[0m"
 #define COLOR_RED "\033[31m"
