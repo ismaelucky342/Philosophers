@@ -6,7 +6,7 @@
 #    By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#              #
-#    Updated: 2024/10/23 11:27:18 by ismherna         ###   ########.fr        #
+#    Updated: 2024/10/23 16:18:58 by ismherna         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ NAME =			philo
 
 CC =			gcc
 
-CFLAGS =		-Wall -Werror -Wextra
+CFLAGS =		-Wall -Werror -Wextra -fsanitize=thread -g3
 
 SRC_FILES =		main.c \
 				utils/ft_allocate.c \
