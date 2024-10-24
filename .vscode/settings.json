@@ -1,6 +1,12 @@
 {
 	"C_Cpp.errorSquiggles": "disabled",
 	"files.associations": {
-		"philo_lib.h": "c"
+		"*.rmd": "markdown",
+		"string.h": "c",
+		"stdlib.h": "c",
+		"random": "c",
+		"limits": "c",
+		"philo_lib.h": "c",
+		"philo.h": "c"
 	}
 }

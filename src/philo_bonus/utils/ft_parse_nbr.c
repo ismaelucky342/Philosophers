@@ -1,21 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_get_time.c                                      :+:      :+:    :+:   */
+/*   ft_parse_nbr.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/23 11:17:36 by ismherna          #+#    #+#             */
-/*   Updated: 2024/10/23 11:18:14 by ismherna         ###   ########.fr       */
+/*   Created: 2024/10/24 23:28:44 by ismherna          #+#    #+#             */
+/*   Updated: 2024/10/24 23:46:21 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-long long	ft_get_time(void)
+int	ft_nbr(char **argv)
 {
-	struct timeval	tv;
+	int	i;
+	int	j;
 
-	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+	i = 1;
+	while (argv[i])
+	{
+		j = 0;
+		while (argv[i][j])
+		{
+			if (!ft_isdigit(argv[i][j]))
+				return (1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
 }

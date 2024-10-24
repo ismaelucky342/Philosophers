@@ -1,22 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_usleep.c                                        :+:      :+:    :+:   */
+/*   check_wait.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/23 11:15:35 by ismherna          #+#    #+#             */
-/*   Updated: 2024/10/24 23:21:08 by ismherna         ###   ########.fr       */
+/*   Created: 2024/10/24 23:21:47 by ismherna          #+#    #+#             */
+/*   Updated: 2024/10/24 23:58:01 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-void	ft_usleep(long long time)
+long long	timestamp(void)
 {
-	long long	start;
+	struct timeval	t;
 
-	start = timestamp();
-	while (timestamp() < start + time)
-		usleep(10);
+	gettimeofday(&t, NULL);
+	return ((t.tv_sec * 1000) + (t.tv_usec / 1000));
+}
+
+void	check_wait(t_philosophers *philo, int time)
+{
+	long long	i;
+
+	i = timestamp();
+	while (Hitman(philo))
+	{
+		if ((-i + timestamp()) >= time)
+			break ;
+		usleep(100);
+	}
+	return ;
 }

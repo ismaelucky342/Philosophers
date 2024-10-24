@@ -3,69 +3,71 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apollo <apollo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#             */
-/*   Updated: 2024/10/23 12:04:17 by apollo           ###   ########.fr       */
+/*   Created: 2024/10/24 23:23:38 by ismherna          #+#    #+#             */
+/*   Updated: 2024/10/24 23:59:04 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
-
-# include <pthread.h>
+#ifndef PHILO_BONUS_H
+# define PHILO_BONUS_H
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <string.h>
-# include <sys/time.h>
+# include <fcntl.h>
+# include <sys/wait.h>
 # include <semaphore.h>
+# include <fcntl.h>
+# include <time.h>
+# include <sys/time.h>
+# include <pthread.h>
+# define SEM_FORKS "/forks_semaphore"
+# define SEM_MEALCK "/philo_mealcheck"
+# define SEM_WRITING "/philo_writing"
+# define SEM_INIT "/philo_init"
 
-# define FORK 1
-# define EAT 2
-# define SLEEP 3
-# define THINK 4
-# define SEM_FORKS "/sem_forks"
-# define SEM_PRINT "/sem_print"
-# define SEM_DEAD "/sem_dead"
+#define COLOR_RESET   "\033[0m"
+#define COLOR_GREEN   "\033[32m"
+#define COLOR_YELLOW  "\033[33m"
+#define COLOR_RED     "\033[31m"
+#define COLOR_CYAN    "\033[36m"
+#define COLOR_BLUE "\033[34m"
 
-typedef struct s_input
+typedef struct s_philosophers
 {
-	int	total_philos;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	count_meals_required;
-}	t_input;
+	int				nb_meal;
+	struct s_global_info	*info;
+	long long		t_last_meal;
+	int				id;
+}					t_philosophers;
 
 typedef struct s_global_info
 {
-	int				philo;
-	int				*dead;
-	long long		last_ate;
-	long long		start_time;
-	int				*number_eats;
-	t_input			params;
-	sem_t			*forks;
-	sem_t			*sem_print;
-	sem_t			*sem_dead;
-}	t_global_info;
+	int			time_eat;
+	int			time_sleep;
+	int			time_die;
+	int			nb_philos;
+	int			nb_eat;
+	pid_t		*pid;
+	long long	first_timestamp;
+	sem_t		*forks;
+	sem_t		*meal_check;
+	sem_t		*writing;
+	t_philosophers		philos;
+}				t_global_info;
 
-int			ft_allocate(pthread_t **th, t_global_info **info, t_input prms);
+void        philosopher(t_philosophers *philo);
+long long	timestamp(void);
+void		ft_output(t_philosophers *philo, char *string);
+void		init_resource(t_global_info *info, char **argv);
+void		destroy_resources(t_global_info *info);
 int			ft_atoi(const char *str);
-int			ft_isdigit(int c);
-void		*philo_routine(void *arg);
-long long	ft_get_time(void);
-void		ft_usleep(long long wait, t_global_info *data);
-void		*routine_monitor(void *arg);
-int			verify_dead(t_global_info *data);
-int			checker_dead(t_global_info *data);
-void		ft_print(t_global_info *data, int action);
-void		ft_print_death(t_global_info *data);
-int			check_args(char **argv);
-void		init_params(char **argv, t_input *arg, int argc);
-int			init_semaphores(t_global_info *data);
-int			ft_world(pthread_t *th, t_global_info *data);
-int			init_g_info(t_global_info *data, t_input arg);
+void		ft_usleep(long long time);
+void		check_wait(t_philosophers *philo, int time);
+int			Hitman(t_philosophers *philo);
+int         ft_isdigit(int c);
+int         ft_nbr(char **argv);
+int         ft_strcmp(const char *str1, const char *str2);
 
 #endif

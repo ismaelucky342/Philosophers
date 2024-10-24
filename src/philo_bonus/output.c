@@ -5,47 +5,98 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#             */
-/*   Updated: 2024/10/23 11:18:14 by ismherna         ###   ########.fr       */
+/*   Created: 2024/10/24 23:30:12 by ismherna          #+#    #+#             */
+/*   Updated: 2024/10/25 00:00:49 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	print_eat(t_global_info *data)
+void	ft_output(t_philosophers *philo, char *string)
 {
-	pthread_mutex_lock(data->mutex_l_ate);
-	data->last_ate = ft_get_time() - data->start_time;
-	pthread_mutex_unlock(data->mutex_l_ate);
-	printf("%lld %d is eating\n", data->last_ate, data->philo);
-	pthread_mutex_lock(data->mutex_to_eats);
-	data->number_eats[data->philo - 1] += 1;
-	pthread_mutex_unlock(data->mutex_to_eats);
+	sem_wait(philo->info->writing);
+	if (ft_strcmp(string, "is eating") == 0)
+		printf(COLOR_GREEN);
+	else if (ft_strcmp(string, "is sleeping") == 0)
+		printf(COLOR_CYAN);
+	else if (ft_strcmp(string, "is thinking") == 0)
+		printf(COLOR_YELLOW);
+	else if (ft_strcmp(string, "died") == 0)
+		printf(COLOR_RED);
+	else
+		printf(COLOR_RESET);
+	printf("%lli ", timestamp() - philo->info->first_timestamp);
+	printf("%i ", philo->id + 1);
+	printf("%s\n", string);
+	printf(COLOR_RESET);
+	sem_post(philo->info->writing);
+	return ;
 }
 
-void	ft_print_death(t_global_info *data)
+int	Hitman(t_philosophers *philo)
 {
-	pthread_mutex_lock(data->mutex_to_print);
-	printf("%lld %d died\n", ft_get_time() - data->start_time, data->philo);
-	pthread_mutex_unlock(data->mutex_to_print);
-}
-
-void	ft_print(t_global_info *data, int action)
-{
-	pthread_mutex_lock(data->mutex_to_print);
-	if (checker_dead(data) == 0)
+	sem_wait(philo->info->meal_check);
+	if ((timestamp() - (philo->t_last_meal)) > philo->info->time_die)
 	{
-		if (action == FORK)
-			printf("%lld %d has taken a fork\n",
-				ft_get_time() - data->start_time, data->philo);
-		else if (action == EAT)
-			print_eat(data);
-		else if (action == SLEEP)
-			printf("%lld %d is sleeping\n",
-				ft_get_time() - data->start_time, data->philo);
-		else if (action == THINK)
-			printf("%lld %d is thinking\n",
-				ft_get_time() - data->start_time, data->philo);
+		sem_wait(philo->info->writing);
+		printf(COLOR_RED "%lli ", timestamp() - philo->info->first_timestamp);
+		printf("%i ", philo->id + 1);
+		printf("is dead" COLOR_RESET "\n");
+		return (-1);
 	}
-	pthread_mutex_unlock(data->mutex_to_print);
+	sem_post(philo->info->meal_check);
+	return (1);
+}
+
+void	*checker_dead(void *arg)
+{
+	t_philosophers	*philo;
+
+	philo = (t_philosophers *)arg;
+	while (Hitman(philo) != -1)
+		usleep(100);
+	free(philo->info->pid);
+	exit(1);
+	return (NULL);
+}
+
+void	philo_eat(t_philosophers *philo)
+{
+	ft_usleep(1);
+	sem_wait(philo->info->forks);
+	ft_output(philo, COLOR_YELLOW "has taken a fork" COLOR_RESET);
+	ft_usleep(1);
+	sem_wait(philo->info->forks);
+	ft_output(philo, COLOR_YELLOW "has taken a fork" COLOR_RESET);
+	sem_wait(philo->info->meal_check);
+	philo->t_last_meal = timestamp();
+	sem_post(philo->info->meal_check);
+	ft_output(philo, COLOR_GREEN "is eating" COLOR_RESET);
+	check_wait(philo, philo->info->time_eat);
+	philo->nb_meal++;
+	sem_post(philo->info->forks);
+	sem_post(philo->info->forks);
+}
+
+void	philosopher(t_philosophers *philo)
+{
+	t_global_info	*info;
+	pthread_t		thread;
+
+	info = philo->info;
+	philo->t_last_meal = timestamp();
+	pthread_create(&thread, NULL, checker_dead, philo);
+	if (philo->id % 2)
+		ft_usleep(50);
+	while (1)
+	{
+		philo_eat(philo);
+		ft_output(philo, COLOR_CYAN "is sleep" COLOR_RESET);
+		check_wait(philo, info->time_sleep);
+		ft_output(philo, COLOR_BLUE "is thinking" COLOR_RESET);
+		if (info->nb_eat != 0 && philo->nb_meal >= info->nb_eat)
+			(pthread_join(thread, NULL), exit(0));
+	}
+	pthread_join(thread, NULL);
+	exit(1);
 }

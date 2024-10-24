@@ -1,25 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   checker_dead.c                                     :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#             */
-/*   Updated: 2024/10/23 16:21:42 by ismherna         ###   ########.fr       */
+/*   Created: 2024/10/24 23:47:39 by ismherna          #+#    #+#             */
+/*   Updated: 2024/10/24 23:47:40 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
-
-int	checker_dead(t_global_info *data)
+int	ft_strcmp(const char *str1, const char *str2)
 {
-	pthread_mutex_lock(data->mutex_to_dead);
-	if (*data->dead == 1)
+	while (*str1 && (*str1 == *str2))
 	{
-		pthread_mutex_unlock(data->mutex_to_dead);
-		return (1);
+		str1++;
+		str2++;
 	}
-	pthread_mutex_unlock(data->mutex_to_dead);
-	return (0);
+	return ((unsigned char)*str1 - (unsigned char)*str2);
 }
