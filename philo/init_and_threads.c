@@ -6,7 +6,7 @@
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#             */
-/*   Updated: 2024/10/28 12:01:37 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/11/02 21:30:22 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ void	init_params(char **argv, t_input *arg, int argc)
 	arg->time_to_eat = (ft_atol(argv[3]));
 	arg->time_to_sleep = (ft_atol(argv[4]));
 	if (argc == 6)
-		arg->count_meals_requiR = (ft_atol(argv[5]));
+		arg->count_meals_required = (ft_atol(argv[5]));
 	else
-		arg->count_meals_requiR = 0;
+		arg->count_meals_required = 0;
 }
 
 int	init_mutex(t_mutex *mutex, int n)
@@ -43,7 +43,7 @@ int	init_mutex(t_mutex *mutex, int n)
 	return (0);
 }
 
-int	ft_world(pthread_t *th, t_global_info *data)
+int	ft_superman(pthread_t *th, t_global_info *data)
 {
 	int		i;
 

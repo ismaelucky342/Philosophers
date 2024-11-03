@@ -6,7 +6,7 @@
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:46:47 by ismherna          #+#    #+#             */
-/*   Updated: 2024/10/28 12:20:04 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/11/02 19:40:07 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_itoa(int n);
 long long		ft_get_time(void);
 int				ft_usleep(size_t milliseconds);
-void			Hitman(t_data *data);
+void			hitman(t_data *data);
 int				check_content_args(char *argv);
 int				check_num_args(int argc);
 int				check_max_min(char *argv);

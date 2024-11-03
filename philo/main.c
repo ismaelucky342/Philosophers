@@ -6,7 +6,7 @@
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#             */
-/*   Updated: 2024/10/28 12:01:37 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/11/02 21:30:22 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	main(int argc, char **argv)
 		return (clean_up(thread, info, mutex, arguments.total_philos));
 	if (init_g_info(info, mutex, arguments) != 0)
 		return (clean_up(thread, info, mutex, arguments.total_philos));
-	ft_world(thread, info);
+	ft_superman(thread, info);
 	clean_up(thread, info, mutex, arguments.total_philos);
 	return (0);
 }

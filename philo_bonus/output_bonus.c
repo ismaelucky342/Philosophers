@@ -6,7 +6,7 @@
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:46:47 by ismherna          #+#    #+#             */
-/*   Updated: 2024/10/28 12:31:22 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/11/02 19:42:36 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ void	printf_with_id_and_time(t_data *data, int id, char *str)
 		sem_post(data->print_semaphore);
 		return ;
 	}
-	printf("\033[1;33m%ld \033[32mphilo[%d]: \033[0m%s\033[0m\n", time, id, str);
+	printf("\033[1;33m%ld \033[32mphilo[%d]: \033[0m%s\033[0m\n", time, id,
+		str);
 	sem_post(data->print_semaphore);
 }
 
@@ -44,30 +45,21 @@ void	eating(t_data *data)
 	usleep(10);
 	sem_wait(data->forks);
 	printf_with_id_and_time(data, data->philo->id,
-		"\033[1;34mhas taken a fork\033[0m"); // Azul claro
+		"\033[1;34mhas taken a fork\033[0m");
 	sem_wait(data->forks);
 	printf_with_id_and_time(data, data->philo->id,
-		"\033[1;34mhas taken a fork\033[0m"); // Azul claro
+		"\033[1;34mhas taken a fork\033[0m");
 	sem_wait(data->eat_semaphore);
 	data->last_meal = ft_get_time();
 	sem_post(data->eat_semaphore);
-	check_alive(data->time_to_eat, data, "\033[32mis eating\033[0m"); // Verde
+	check_alive(data->time_to_eat, data, "\033[32mis eating\033[0m");
 	data->philo->times_eaten++;
 	sem_post(data->forks);
 	sem_post(data->forks);
 }
 
-void	*routine(t_data *data)
+static void	run_philo_cycle(t_data *data)
 {
-	data->last_meal = ft_get_time();
-	if (pthread_create(&data->monitor_thread, NULL, monitor, (void *)data))
-	{
-		printf("Error creating monitor thread\n");
-		return (NULL);
-	}
-	if (data->philo->id % 2 == 0)
-		ft_usleep(5);
-	sem_wait(data->dead_semaphore);
 	while (1)
 	{
 		sem_post(data->dead_semaphore);
@@ -83,6 +75,20 @@ void	*routine(t_data *data)
 			"\033[35mis thinking\033[0m");
 		sem_wait(data->dead_semaphore);
 	}
+}
+
+void	*routine(t_data *data)
+{
+	data->last_meal = ft_get_time();
+	if (pthread_create(&data->monitor_thread, NULL, monitor, (void *)data))
+	{
+		printf("Error creating monitor thread\n");
+		return (NULL);
+	}
+	if (data->philo->id % 2 == 0)
+		ft_usleep(5);
+	sem_wait(data->dead_semaphore);
+	run_philo_cycle(data);
 	pthread_join(data->monitor_thread, NULL);
 	exit(1);
 }

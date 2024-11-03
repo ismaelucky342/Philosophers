@@ -6,7 +6,7 @@
 #    By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#              #
-#    Updated: 2024/10/28 12:19:19 by ismherna         ###   ########.fr        #
+#    Updated: 2024/10/30 11:35:14 by ismherna         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ R = \033[0;31m
 NC = \033[0m
 
 
-NAME =			philo
+NAME =			philo_bomus
 
 CC =			gcc
 
@@ -52,7 +52,7 @@ $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
 %.o: %.c
-	@printf "%-100s\r" ">Philo compiling: $(CC) $(CFLAGS) -c -o $@ $<"
+	@printf "%-200s\r" ">Philo_bonus compiling: $(CC) $(CFLAGS) -c -o $@ $<"
 	@$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:

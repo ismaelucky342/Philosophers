@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   process_management_bonus.c                         :+:      :+:    :+:   */
+/*   process_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:46:47 by ismherna          #+#    #+#             */
-/*   Updated: 2024/10/28 12:07:18 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/11/02 19:40:07 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-void	Hitman(t_data *data)
+void	hitman(t_data *data)
 {
 	int	status;
 	int	i;
@@ -49,14 +49,14 @@ void	philo_life(t_data *data)
 	if (str == NULL)
 	{
 		printf("Error: fail creating sem\n");
-		Hitman(data);
+		hitman(data);
 	}
 	sem_unlink(str);
 	data->eat_semaphore = sem_open(str, O_CREAT, 0644, 1);
 	if (data->eat_semaphore == SEM_FAILED)
 	{
 		write(2, "Semaphore error\n", 16);
-		Hitman(data);
+		hitman(data);
 	}
 }
 
@@ -75,9 +75,7 @@ void	create_processes(t_data *data)
 			routine(data);
 		}
 		else if (data->philo->pid == -1)
-			Hitman(data);
+			hitman(data);
 		i++;
 	}
 }
-
-

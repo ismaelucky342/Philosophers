@@ -6,7 +6,7 @@
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#             */
-/*   Updated: 2024/10/28 11:57:29 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/11/02 19:46:20 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ int	verify_eat(t_global_info *data)
 	int	i;
 
 	i = 0;
-	if (data->params.count_meals_requiR == 0)
+	if (data->params.count_meals_required == 0)
 		return (0);
 	pthread_mutex_lock(data->mutex_to_eats);
 	while (i < data->params.total_philos)
 	{
-		if (data->number_eats[i] < data->params.count_meals_requiR)
+		if (data->number_eats[i] < data->params.count_meals_required)
 		{
 			pthread_mutex_unlock(data->mutex_to_eats);
 			return (0);

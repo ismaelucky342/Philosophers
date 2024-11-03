@@ -6,7 +6,7 @@
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 11:09:36 by ismherna          #+#    #+#             */
-/*   Updated: 2024/10/28 12:04:23 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/11/02 19:46:39 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,3 @@ long	ft_atol(const char *str)
 		num = num * 10 + (*str++ - '0');
 	return (num * sign);
 }
-

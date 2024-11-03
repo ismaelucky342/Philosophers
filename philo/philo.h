@@ -6,7 +6,7 @@
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#             */
-/*   Updated: 2024/10/28 12:02:06 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/11/02 21:30:22 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct s_input
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
-	int				count_meals_requiR;
+	int				count_meals_required;
 }					t_input;
 
 typedef struct s_global_info
@@ -79,7 +79,7 @@ void				ft_print_death(t_global_info *data);
 int					check_args(char **argv);
 void				init_params(char **argv, t_input *arg, int argc);
 int					init_mutex(t_mutex *mutex, int n);
-int					ft_world(pthread_t *th, t_global_info *data);
+int					ft_superman(pthread_t *th, t_global_info *data);
 int					init_g_info(t_global_info *data, t_mutex mutex,
 						t_input arg);
 

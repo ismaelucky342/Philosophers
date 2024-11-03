@@ -6,7 +6,7 @@
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:46:47 by ismherna          #+#    #+#             */
-/*   Updated: 2024/10/28 12:15:28 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/11/02 19:40:07 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	main(int argc, char *argv[])
 		return (1);
 	start_philo(&data, argv);
 	create_processes(&data);
-	Hitman(&data);
+	hitman(&data);
 	return (0);
 }
 
@@ -46,14 +46,13 @@ int	check_num_args(int argc)
 	if (argc < 5 || argc > 6)
 	{
 		printf(R "Error: " NC "Invalid number of arguments\n\n"
-		       "\tUsage: ./philo_bonus [number_of_philosophers] "
-		       "[time_to_die] [time_to_eat] [time_to_sleep] "
-		       "[number_of_times_each_philosopher_must_eat]\n");
+			"\tUsage: ./philo_bonus [number_of_philosophers] "
+			"[time_to_die] [time_to_eat] [time_to_sleep] "
+			"[number_of_times_each_philosopher_must_eat]\n");
 		return (0);
 	}
 	return (1);
 }
-
 
 int	check_max_min(char *argv)
 {

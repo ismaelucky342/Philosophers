@@ -6,7 +6,7 @@
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:46:47 by ismherna          #+#    #+#             */
-/*   Updated: 2024/10/28 12:30:07 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/11/02 19:34:47 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	*monitor(void *arg)
 
 void	check_alive(long long time, t_data *data, char *str)
 {
-	time_t start;
+	time_t		start;
 
 	start = ft_get_time();
 	if (str)
