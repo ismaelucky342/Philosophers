@@ -6,7 +6,7 @@
 #    By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#              #
-#    Updated: 2024/10/30 11:35:14 by ismherna         ###   ########.fr        #
+#    Updated: 2024/11/02 21:25:42 by ismherna         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ R = \033[0;31m
 NC = \033[0m
 
 
-NAME =			philo_bomus
+NAME =			philo_bonus
 
 CC =			gcc
 

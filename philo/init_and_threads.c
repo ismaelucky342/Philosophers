@@ -6,7 +6,7 @@
 /*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#             */
-/*   Updated: 2024/11/02 21:30:22 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/11/02 21:31:33 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ int	ft_superman(pthread_t *th, t_global_info *data)
 	i = 0;
 	if (data->params.total_philos == 1)
 	{
-		printf("0  1 has taken a fork\n");
+		printf("0  \033[32mphilo[1]: \033[1;34mhas taken a fork\033[0m\n");
 		ft_usleep(data->params.time_to_die, data);
-		printf("%d  1 died\n", data->params.time_to_die);
+		printf("%d  \033[32mphilo[1]:\033[0m \033[31mhas died\033[0m\n", data->params.time_to_die);
 		return (1);
 	}
 	while (i < data->params.total_philos)
