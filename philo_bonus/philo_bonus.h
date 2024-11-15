@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apollo <apollo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:46:47 by ismherna          #+#    #+#             */
-/*   Updated: 2024/11/02 19:40:07 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/11/14 21:03:31 by apollo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,7 @@ int				check_num_args(int argc);
 int				check_max_min(char *argv);
 int				check_valid_args(int argc, char *argv[]);
 int				ft_strlen(const char *str);
-
+void			putchar_fd(char c, int fd);
+void			putstr_fd(const char *str, int fd);
+void			putnbr_fd(size_t num, int fd);
 #endif

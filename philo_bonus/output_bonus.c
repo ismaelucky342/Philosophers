@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   output_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apollo <apollo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:46:47 by ismherna          #+#    #+#             */
-/*   Updated: 2024/11/02 22:21:21 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/11/14 21:15:33 by apollo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,13 @@ void	printf_with_id_and_time(t_data *data, int id, char *str)
 		sem_post(data->print_semaphore);
 		return ;
 	}
-	printf("\033[1;33m%ld \033[32mphilo[%d]: \033[0m%s\033[0m\n", time, id,
-		str);
+	putstr_fd("\033[1;33m", 1);
+	putnbr_fd(time, 1);
+	putstr_fd(" \033[32mphilo[", 1);
+	putnbr_fd(id, 1);
+	putstr_fd("]: \033[0m", 1);
+	putstr_fd(str, 1);
+	putstr_fd("\033[0m\n", 1);
 	sem_post(data->print_semaphore);
 }
 
@@ -89,6 +94,12 @@ void	*routine(t_data *data)
 		ft_usleep(5);
 	sem_wait(data->dead_semaphore);
 	run_philo_cycle(data);
-	pthread_join(data->monitor_thread, NULL);
+	if (pthread_detach(data->monitor_thread) != 0)
+	{
+		printf("Error detaching monitor thread\n");
+		return (NULL);
+	}
+	sem_close(data->dead_semaphore);
+	sem_unlink("dead_semaphore_name");
 	exit(1);
 }
