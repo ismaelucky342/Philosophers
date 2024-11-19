@@ -6,7 +6,7 @@
 /*   By: apollo <apollo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:46:47 by ismherna          #+#    #+#             */
-/*   Updated: 2024/11/15 18:57:42 by apollo           ###   ########.fr       */
+/*   Updated: 2024/11/19 19:06:25 by apollo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,10 @@ void hitman(t_data *data)
         }
         i++;
     }
-
-    // Asegurarse de cerrar los semáforos correctamente
     sem_close(data->forks);
     sem_close(data->print_semaphore);
     sem_close(data->dead_semaphore);
     sem_close(data->eat_semaphore);
-
-    // Asegurarse de deshacer los semáforos
     sem_unlink("/forks");
     sem_unlink("/eat_sem");
     sem_unlink("/print_sem");
@@ -59,7 +55,7 @@ void philo_life(t_data *data)
     {
         printf("Error: fail creating sem\n");
         hitman(data);
-        return;  // Es importante regresar en caso de error para evitar más problemas
+        return;
     }
     sem_unlink(str);
     
@@ -68,8 +64,8 @@ void philo_life(t_data *data)
     {
         write(2, "Semaphore error\n", 16);
         hitman(data);
-        free(str);  // Liberar memoria antes de retornar
-        return;     // No continuar después de un error
+        free(str);
+        return;
     }
     free(str);
 }
