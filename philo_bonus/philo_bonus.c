@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apollo <apollo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:46:47 by ismherna          #+#    #+#             */
-/*   Updated: 2024/11/02 19:40:07 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/11/20 12:34:29 by apollo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ int	check_num_args(int argc)
 {
 	if (argc < 5 || argc > 6)
 	{
-		printf(R "Error: " NC "Invalid number of arguments\n\n"
-			"\tUsage: ./philo_bonus [number_of_philosophers] "
+		printf(R "Error: " NC "Invalid number of arguments\n"
+			"Usage: ./philo_bonus [number_of_philosophers] "
 			"[time_to_die] [time_to_eat] [time_to_sleep] "
 			"[number_of_times_each_philosopher_must_eat]\n");
 		return (0);
