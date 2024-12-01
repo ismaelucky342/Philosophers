@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+         #
+#    By: apollo <apollo@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#              #
-#    Updated: 2024/12/01 02:12:40 by ismherna         ###   ########.fr        #
+#    Updated: 2024/12/01 12:59:12 by apollo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ NAME =			philo_bonus
 
 CC =			gcc
 
-CFLAGS =		-Wall -Werror -Wextra
+CFLAGS =		-Wall -Werror -Wextra 
 
 SRC_FILES =		philo_bonus.c \
 				utils/ft_atol.c \

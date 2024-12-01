@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: apollo <apollo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 02:07:46 by ismherna          #+#    #+#             */
-/*   Updated: 2024/12/01 02:37:16 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/12/01 13:02:05 by apollo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ static int	ft_start_process(t_data *d)
 	}
 	return (0);
 }
+
 
 int	main(int argc, char **argv)
 {
