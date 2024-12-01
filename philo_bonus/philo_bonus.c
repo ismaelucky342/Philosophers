@@ -3,87 +3,117 @@
 /*                                                        :::      ::::::::   */
 /*   philo_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apollo <apollo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/28 11:46:47 by ismherna          #+#    #+#             */
-/*   Updated: 2024/11/20 12:34:29 by apollo           ###   ########.fr       */
+/*   Created: 2021/12/05 18:36:19 by rbiodies          #+#    #+#             */
+/*   Updated: 2024/12/01 01:44:00 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int	main(int argc, char *argv[])
+static int	ft_free(t_data *d) 
 {
-	t_data	data;
+	int		i;
+	char	name[255];
 
-	if (check_valid_args(argc, argv) == 0)
-		return (1);
-	start_philo(&data, argv);
-	create_processes(&data);
-	hitman(&data);
+	if (d == NULL)
+		return (0);	
+	if (d->philo != NULL)
+	{
+		i = 0;
+		while (i < d->num_of_philo)
+		{
+			if (d->philo[i].id > 0)
+				kill(d->philo[i].id, SIGKILL);
+			ft_sem_name("stop_eat", (char *)name, i);
+			sem_unlink(name);
+			i++;
+		}
+		free(d->philo);
+	}
+	sem_unlink("fork");
+	sem_unlink("print");
+	sem_unlink("mutex");
+	sem_unlink("somebody_dead");
 	return (0);
 }
 
-int	check_content_args(char *argv)
-{
-	int	i;
 
+static void	*ft_monitor(void *d_v)
+{
+	t_data	*d;
+	int		i;
+
+	d = (t_data *)d_v;
 	i = 0;
-	while (argv[i] != '\0')
+	while (i < d->num_of_philo)
 	{
-		if (argv[i] < '0' || argv[i] > '9')
-		{
-			printf("Error: Invalid argument\n");
-			return (0);
-		}
+		sem_wait(d->philo[i].stop_eat);
 		i++;
 	}
-	return (1);
+	sem_wait(d->print);
+	printf("\033[92m🥳Congratulations: The program has ended successfully!🎉\n");
+	printf("\033[92mAll the philosophers eat %d times!\n",
+		d->num_of_times_each_philo_must_eat);
+	sem_post(d->somebody_dead);
+	return (NULL);
 }
 
-int	check_num_args(int argc)
+static int	ft_start_process(t_data *d)
 {
-	if (argc < 5 || argc > 6)
-	{
-		printf(R "Error: " NC "Invalid number of arguments\n"
-			"Usage: ./philo_bonus [number_of_philosophers] "
-			"[time_to_die] [time_to_eat] [time_to_sleep] "
-			"[number_of_times_each_philosopher_must_eat]\n");
-		return (0);
-	}
-	return (1);
-}
+	pthread_t	tid;
+	int			i;
 
-int	check_max_min(char *argv)
-{
-	if (ft_atol(argv) > 2147483647)
+	if (d->num_of_times_each_philo_must_eat > -1)
 	{
-		printf(R "Error: " NC "Argument is too large\n");
-		return (0);
+		if (pthread_create(&tid, NULL, &ft_monitor, (void *)d) != 0)
+			return (1);
+		pthread_detach(tid);
 	}
-	else if (ft_atol(argv) < 0)
+	d->time_start = ft_current_time();
+	i = 0;
+	while (i < d->num_of_philo)
 	{
-		printf(R "Error: " NC "Argument is too small\n");
-		return (0);
-	}
-	return (1);
-}
-
-int	check_valid_args(int argc, char *argv[])
-{
-	int	i;
-
-	i = 1;
-	if (check_num_args(argc) == 0)
-		return (0);
-	while (i < argc)
-	{
-		if ((check_max_min(argv[i]) == 0) || (check_content_args(argv[i]) == 0))
+		d->philo[i].id = fork();
+		if (d->philo[i].id < 0)
+			return (1);
+		else if (d->philo[i].id == 0)
 		{
-			printf(R "Error: " NC "Argument %d is invalid\n", i);
-			return (0);
+			ft_routine(&d->philo[i]);
+			exit(0);
 		}
+		usleep(100);
 		i++;
 	}
-	return (1);
+	return (0);
+}
+
+int	main(int argc, char **argv)
+{
+	t_data	d;
+
+	if (argc == 5 || argc == 6)
+	{
+		if (ft_parsing(argc, argv, &d) == 1)
+		{
+			printf("\033[0;31mError: parsing failure\n");
+			return (0);
+		}
+		if (ft_init(&d) == 1)
+		{
+			printf("\033[0;31mError: Malloc allocation failed\n");
+			return (ft_free(&d));
+		}
+		if (ft_start_process(&d) == 1)
+		{
+			printf("\033[0;31mError: process failure\n");
+			return (ft_free(&d));
+		}
+		sem_wait(d.somebody_dead);
+		ft_free(&d);
+	}
+	else
+		return (ft_error_arg(argc));
+	return (0);
 }

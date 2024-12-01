@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/28 11:50:30 by ismherna          #+#    #+#             */
-/*   Updated: 2024/11/02 19:40:29 by ismherna         ###   ########.fr       */
+/*   Created: 2021/12/06 16:06:32 by rbiodies          #+#    #+#             */
+/*   Updated: 2024/11/30 22:57:26 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo_bonus.h"
 
-int	ft_strlen(const char *str)
+int	ft_strcpy(char *dst, const char *src)
 {
 	int	i;
 
 	i = 0;
-	while (str[i])
+	while (src[i])
+	{
+		dst[i] = src[i];
 		i++;
+	}
+	dst[i] = 0;
 	return (i);
 }

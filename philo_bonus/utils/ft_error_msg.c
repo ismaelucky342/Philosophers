@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_get_time.c                                      :+:      :+:    :+:   */
+/*   ft_error_msg.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ismherna <ismherna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/28 11:48:00 by ismherna          #+#    #+#             */
-/*   Updated: 2024/11/02 19:40:25 by ismherna         ###   ########.fr       */
+/*   Created: 2024/11/30 22:49:04 by ismherna          #+#    #+#             */
+/*   Updated: 2024/11/30 22:51:18 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo_bonus.h"
 
-long long	ft_get_time(void)
+int ft_error_arg(int argc)
 {
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+    if (argc > 6)
+        write(1, "\033[1;31mError:\033[0m Too many arguments\n", 37);
+    else if (argc < 5)
+        write(1, "\033[1;31mError:\033[0m Too few arguments\n", 36);
+    return (1);
 }

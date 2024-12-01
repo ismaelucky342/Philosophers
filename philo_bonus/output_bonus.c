@@ -3,103 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   output_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apollo <apollo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/28 11:46:47 by ismherna          #+#    #+#             */
-/*   Updated: 2024/11/14 21:15:33 by apollo           ###   ########.fr       */
+/*   Created: 2021/12/06 12:53:13 by rbiodies          #+#    #+#             */
+/*   Updated: 2024/11/30 23:12:38 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-void	printf_with_id_and_time(t_data *data, int id, char *str)
+void	ft_print_message(t_data *d, int pid, char *msg)
 {
-	size_t	time;
+	long long	time_work;
 
-	sem_wait(data->print_semaphore);
-	time = ft_get_time() - data->start_time;
-	if (data->dead_flag == 1)
-	{
-		sem_post(data->print_semaphore);
-		return ;
-	}
-	putstr_fd("\033[1;33m", 1);
-	putnbr_fd(time, 1);
-	putstr_fd(" \033[32mphilo[", 1);
-	putnbr_fd(id, 1);
-	putstr_fd("]: \033[0m", 1);
-	putstr_fd(str, 1);
-	putstr_fd("\033[0m\n", 1);
-	sem_post(data->print_semaphore);
-}
-
-int	dead_philo(t_data *data)
-{
-	sem_wait(data->dead_semaphore);
-	if (data->dead_flag == 1)
-	{
-		sem_post(data->dead_semaphore);
-		return (1);
-	}
-	sem_post(data->dead_semaphore);
-	return (0);
-}
-
-void	eating(t_data *data)
-{
-	usleep(10);
-	sem_wait(data->forks);
-	printf_with_id_and_time(data, data->philo->id,
-		"\033[1;34mhas taken a fork\033[0m");
-	sem_wait(data->forks);
-	printf_with_id_and_time(data, data->philo->id,
-		"\033[1;34mhas taken a fork\033[0m");
-	sem_wait(data->eat_semaphore);
-	data->last_meal = ft_get_time();
-	sem_post(data->eat_semaphore);
-	check_alive(data->time_to_eat, data, "\033[32mis eating\033[0m");
-	data->philo->times_eaten++;
-	sem_post(data->forks);
-	sem_post(data->forks);
-}
-
-static void	run_philo_cycle(t_data *data)
-{
-	while (1)
-	{
-		sem_post(data->dead_semaphore);
-		eating(data);
-		if (dead_philo(data))
-			exit(0);
-		if (data->num_of_meals != -1
-			&& data->philo->times_eaten >= data->num_of_meals)
-			exit(0);
-		check_alive(data->time_to_sleep, data,
-			"\033[38;5;214mis sleeping\033[0m");
-		printf_with_id_and_time(data, data->philo->id,
-			"\033[35mis thinking\033[0m");
-		sem_wait(data->dead_semaphore);
-	}
-}
-
-void	*routine(t_data *data)
-{
-	data->last_meal = ft_get_time();
-	if (pthread_create(&data->monitor_thread, NULL, monitor, (void *)data))
-	{
-		printf("Error creating monitor thread\n");
-		return (NULL);
-	}
-	if (data->philo->id % 2 == 0)
-		ft_usleep(5);
-	sem_wait(data->dead_semaphore);
-	run_philo_cycle(data);
-	if (pthread_detach(data->monitor_thread) != 0)
-	{
-		printf("Error detaching monitor thread\n");
-		return (NULL);
-	}
-	sem_close(data->dead_semaphore);
-	sem_unlink("dead_semaphore_name");
-	exit(1);
+	time_work = ft_current_time() - d->time_start;
+	sem_wait(d->print);
+	printf("\033[36m%lld \033[0;32mphilo[%d] %s\n", time_work, pid, msg);
+	sem_post(d->print);
 }

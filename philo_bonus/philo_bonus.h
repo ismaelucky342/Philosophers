@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apollo <apollo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:46:47 by ismherna          #+#    #+#             */
-/*   Updated: 2024/11/14 21:03:31 by apollo           ###   ########.fr       */
+/*   Updated: 2024/12/01 01:16:08 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,68 +14,59 @@
 # define PHILO_BONUS_H
 
 # define G "\033[0;32m"
-# define NC "\033[0m"
 # define R "\033[0;31m"
 # define Y "\033[0;33m"
+# define CR "\033[0m"
+# define B "\033[34m"
+# define M "\033[35m"
+# define CY "\033[36m"
+# define NC "\033[0m"
 
-# include <fcntl.h>
-# include <pthread.h>
-# include <semaphore.h>
-# include <signal.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <sys/time.h>
-# include <sys/wait.h>
 # include <unistd.h>
+# include <pthread.h>
+# include <fcntl.h>
+# include <semaphore.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <sys/time.h>
+# include <signal.h>
 
 typedef struct s_philo
 {
-	int			id;
-	int			*dead_flag;
-	int			times_eaten;
-	pid_t		pid;
-}				t_philo;
+	int				pid;
+	int				count_eat;
+	long long		last_eat;
+	struct s_data	*d;
+	pid_t			id;
+	pthread_t		wait;
+	sem_t			*stop_eat;
+}	t_philo;
 
 typedef struct s_data
 {
-	pthread_t	monitor_thread;
-	int			dead_flag;
-	int			eat_flag;
-	int			num_of_meals;
 	int			num_of_philo;
-	sem_t		*dead_semaphore;
-	sem_t		*eat_semaphore;
-	sem_t		*forks;
-	sem_t		*print_semaphore;
-	size_t		last_meal;
-	size_t		start_time;
-	size_t		time_to_die;
-	size_t		time_to_eat;
-	size_t		time_to_sleep;
+	int			time_to_die;
+	int			time_to_eat;
+	int			time_to_sleep;
+	int			num_of_times_each_philo_must_eat;
+	long long	time_start;
 	t_philo		*philo;
-}				t_data;
+	sem_t		*fork;
+	sem_t		*print;
+	sem_t		*mutex;
+	sem_t		*somebody_dead;
+}	t_data;
 
-int				check_valid_args(int argc, char *argv[]);
+void		*ft_calloc(size_t count, size_t size);
+int			ft_parsing(int argc, char **argv, t_data *d);
+long		ft_atol(const char *str);
+int			ft_init(t_data *d);
+long long	ft_current_time(void);
+char		*ft_sem_name(char const *base, char *name, int pos);
+int			ft_strcpy(char *dst, const char *src);
+int			ft_routine(void *philo_v);
+void		ft_print_message(t_data *d, int pid, char *msg);
+void		ft_usleep(int time);
+int			ft_error_arg(int argc);
 
-void			start_philo(t_data *data, char *argv[]);
-void			create_processes(t_data *data);
-void			*monitor(void *data);
-void			*routine(t_data *data);
-void			check_alive(long long time, t_data *data, char *str);
-long			ft_atol(const char *str);
-void			printf_with_id_and_time(t_data *data, int id, char *str);
-char			*ft_strjoin(char const *s1, char const *s2);
-char			*ft_itoa(int n);
-long long		ft_get_time(void);
-int				ft_usleep(size_t milliseconds);
-void			hitman(t_data *data);
-int				check_content_args(char *argv);
-int				check_num_args(int argc);
-int				check_max_min(char *argv);
-int				check_valid_args(int argc, char *argv[]);
-int				ft_strlen(const char *str);
-void			putchar_fd(char c, int fd);
-void			putstr_fd(const char *str, int fd);
-void			putnbr_fd(size_t num, int fd);
 #endif

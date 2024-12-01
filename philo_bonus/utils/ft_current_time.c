@@ -1,22 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_usleep.c                                        :+:      :+:    :+:   */
+/*   ft_current_time.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/30 22:48:28 by ismherna          #+#    #+#             */
-/*   Updated: 2024/11/30 22:48:38 by ismherna         ###   ########.fr       */
+/*   Created: 2024/11/30 22:49:33 by ismherna          #+#    #+#             */
+/*   Updated: 2024/11/30 22:49:38 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo_bonus.h"
 
-void	ft_usleep(int time_action)
+long long	ft_current_time(void)
 {
-	long	start;
+	struct timeval	current_time;
+	long long		ms;
 
-	start = ft_current_time();
-	while (ft_current_time() < start + time_action)
-		usleep(10);
+	gettimeofday(&current_time, NULL);
+	ms = (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000);
+	return (ms);
 }
