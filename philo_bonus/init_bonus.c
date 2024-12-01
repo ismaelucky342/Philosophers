@@ -6,7 +6,7 @@
 /*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 02:07:46 by ismherna          #+#    #+#             */
-/*   Updated: 2024/12/01 02:09:15 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/12/01 02:15:49 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	ft_init_philo(t_data *d)
 	int		i;
 	char	name[250];
 
-	d->philo = malloc(d->num_of_philo);
+	d->philo = malloc(d->num_of_philo * sizeof(t_philo));
 	if (d->philo == NULL)
 		return (1);
 	i = 0;

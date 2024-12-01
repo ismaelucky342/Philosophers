@@ -6,19 +6,19 @@
 /*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 02:07:46 by ismherna          #+#    #+#             */
-/*   Updated: 2024/12/01 02:09:15 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/12/01 02:32:43 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-static int	ft_free(t_data *d) 
+static int	ft_free(t_data *d)
 {
 	int		i;
 	char	name[255];
 
 	if (d == NULL)
-		return (0);	
+		return (0);
 	if (d->philo != NULL)
 	{
 		i = 0;
@@ -26,19 +26,23 @@ static int	ft_free(t_data *d)
 		{
 			if (d->philo[i].id > 0)
 				kill(d->philo[i].id, SIGKILL);
+			sem_close(d->philo[i].stop_eat); // Cerrar el semáforo
 			ft_sem_name("stop_eat", (char *)name, i);
 			sem_unlink(name);
 			i++;
 		}
 		free(d->philo);
 	}
+	sem_close(d->fork);
+	sem_close(d->print);
+	sem_close(d->mutex);
+	sem_close(d->somebody_dead);
 	sem_unlink("fork");
 	sem_unlink("print");
 	sem_unlink("mutex");
 	sem_unlink("somebody_dead");
 	return (0);
 }
-
 
 static void	*ft_monitor(void *d_v)
 {
@@ -91,7 +95,7 @@ static int	ft_start_process(t_data *d)
 
 int	main(int argc, char **argv)
 {
-	t_data	d;
+	t_data d;
 
 	if (argc == 5 || argc == 6)
 	{
