@@ -5,26 +5,34 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/28 22:44:23 by ismherna          #+#    #+#             */
-/*   Updated: 2024/12/01 02:08:47 by ismherna         ###   ########.fr       */
+/*   Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#             */
+/*   Updated: 2024/12/03 23:59:00 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo_bonus.h"
 
-long	ft_atol(const char *str)
+int	ft_atol(const char *str)
 {
-	long	num;
-	int		sign;
+	long int	n;
+	int			max_int;
 
-	num = 0;
-	sign = 1;
-	while (*str == ' ' || (*str >= 9 && *str <= 13))
+	max_int = 2147483647;
+	while ((*str >= 9 && *str <= 13) || *str == ' ')
 		str++;
-	if (*str == '-' || *str == '+')
-		if (*str++ == '-')
-			sign = -1;
+	n = 0;
+	if (*str == '-')
+		return (-1);
+	if (*str == '+')
+		str++;
 	while (*str >= '0' && *str <= '9')
-		num = num * 10 + (*str++ - '0');
-	return (num * sign);
+	{
+		n = n * 10 + *str - '0';
+		if (n > max_int)
+			return (-1);
+		str++;
+	}
+	if (*str != '\0' || n == 0)
+		return (-1);
+	return ((int)n);
 }

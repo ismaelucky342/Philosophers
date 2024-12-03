@@ -5,19 +5,17 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/14 02:07:46 by ismherna          #+#    #+#             */
-/*   Updated: 2024/12/01 02:09:15 by ismherna         ###   ########.fr       */
+/*   Created: 2024/12/04 00:12:35 by ismherna          #+#    #+#             */
+/*   Updated: 2024/12/04 00:16:32 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-void	ft_print_message(t_data *d, int pid, char *msg)
+void	philo_print(t_philosophers *philo, char *str)
 {
-	long long	time_work;
-
-	time_work = ft_current_time() - d->time_start;
-	sem_wait(d->print);
-	printf("\033[36m%lld \033[0;32mphilo[%d] %s\n", time_work, pid, msg);
-	sem_post(d->print);
+	sem_wait(philo->block_printf);
+	if (!philo->stop)
+		printf("%lld %d %s\n", ft_get_time() - philo->t_start, philo->index, str);
+	sem_post(philo->block_printf);
 }

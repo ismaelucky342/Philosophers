@@ -1,23 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_current_time.c                                  :+:      :+:    :+:   */
+/*   ft_get_time.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/28 22:49:33 by ismherna          #+#    #+#             */
-/*   Updated: 2024/12/01 02:08:47 by ismherna         ###   ########.fr       */
+/*   Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#             */
+/*   Updated: 2024/12/03 23:58:56 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo_bonus.h"
 
-long long	ft_current_time(void)
+long long	ft_get_time(void)
 {
-	struct timeval	current_time;
-	long long		ms;
+	struct timeval	t;
 
-	gettimeofday(&current_time, NULL);
-	ms = (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000);
-	return (ms);
+	gettimeofday(&t, NULL);
+	return ((t.tv_sec * 1000) + (t.tv_usec / 1000));
 }

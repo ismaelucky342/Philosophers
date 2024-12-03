@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcpy.c                                        :+:      :+:    :+:   */
+/*   ft_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/14 02:07:46 by ismherna          #+#    #+#             */
-/*   Updated: 2024/12/01 02:09:15 by ismherna         ###   ########.fr       */
+/*   Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#             */
+/*   Updated: 2024/12/03 23:58:58 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo_bonus.h"
 
-int	ft_strcpy(char *dst, const char *src)
+int	ft_error(char *str)
 {
 	int	i;
 
 	i = 0;
-	while (src[i])
-	{
-		dst[i] = src[i];
+	while (*(str + i))
 		i++;
-	}
-	dst[i] = 0;
-	return (i);
+	write(2, str, i);
+	write(2, "\n", 1);
+	exit(0);
 }
