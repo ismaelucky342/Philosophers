@@ -1,28 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   str_utils_bonus.c                                  :+:      :+:    :+:   */
+/*   ft_atol.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/11 13:46:11 by ismherna          #+#    #+#             */
-/*   Updated: 2024/12/11 13:48:01 by ismherna         ###   ########.fr       */
+/*   Created: 2024/12/11 14:00:55 by ismherna          #+#    #+#             */
+/*   Updated: 2024/12/11 14:01:21 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_bonus.h"
+#include "../philo_bonus.h"
 
-size_t	ft_strlen(const char *s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-		++i;
-	return (i);
-}
-
-long	ft_atoi(const char *str)
+long	ft_atol(const char *str)
 {
 	long	num;
 	int		sign;

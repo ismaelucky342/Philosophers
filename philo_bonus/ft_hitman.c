@@ -1,25 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_bonus.c                                      :+:      :+:    :+:   */
+/*   ft_hitman.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/11 13:46:22 by ismherna          #+#    #+#             */
-/*   Updated: 2024/12/11 13:48:05 by ismherna         ###   ########.fr       */
+/*   Created: 2024/12/11 14:26:17 by ismherna          #+#    #+#             */
+/*   Updated: 2024/12/11 15:55:09 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-void	error_message(char *text, int signal)
-{
-	if (text)
-		write(2, text, ft_strlen(text) + 1);
-	exit(signal);
-}
-
-void	destroy_all(t_engine *engine, char *str, bool isParentProc, int signal)
+void	ft_hitman(t_engine *engine, char *str, bool isParentProc, int signal)
 {
 	int	i;
 
@@ -46,32 +39,4 @@ void	destroy_all(t_engine *engine, char *str, bool isParentProc, int signal)
 	free(engine->proc_ids);
 	free(engine);
 	error_message(str, signal);
-}
-
-void	print_action(t_philo *philo, char *action)
-{
-	size_t	time;
-
-	sem_wait(philo->sems->write_sem);
-	time = get_current_time() - philo->times.born_time;
-	printf(GREEN"[%ld]"RESET" %d %s\n", time, philo->id, action);
-	sem_post(philo->sems->write_sem);
-}
-
-size_t	get_current_time(void)
-{
-	t_timeval	time;
-
-	if (gettimeofday(&time, NULL) == -1)
-		error_message("[gettimeofday ERROR]\n", 1);
-	return (time.tv_sec * 1000 + time.tv_usec / 1000);
-}
-
-void	ft_usleep(size_t mls)
-{
-	size_t	start;
-
-	start = get_current_time();
-	while (get_current_time() - start < mls)
-		usleep(100);
 }
