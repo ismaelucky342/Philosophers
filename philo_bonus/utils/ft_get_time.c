@@ -5,17 +5,17 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#             */
-/*   Updated: 2024/12/03 23:58:56 by ismherna         ###   ########.fr       */
+/*   Created: 2024/12/11 02:14:19 by ismherna          #+#    #+#             */
+/*   Updated: 2024/12/11 02:34:04 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo_bonus.h"
+#include "../philo.h"
 
-long long	ft_get_time(void)
+long long	ft_get_time()
 {
-	struct timeval	t;
+	struct timeval	tv;
 
-	gettimeofday(&t, NULL);
-	return ((t.tv_sec * 1000) + (t.tv_usec / 1000));
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }

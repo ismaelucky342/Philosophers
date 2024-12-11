@@ -5,22 +5,15 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#             */
-/*   Updated: 2024/12/03 23:59:23 by ismherna         ###   ########.fr       */
+/*   Created: 2024/12/11 02:15:46 by ismherna          #+#    #+#             */
+/*   Updated: 2024/12/11 02:36:44 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo_bonus.h"
+#include "../philo.h"
 
-void	ft_usleep(long long time, t_philosophers *philo)
+void	ft_usleep(t_philosophers *philo)
 {
-	long long	t;
-
-	t = ft_get_time();
-	while (!philo->stop)
-	{
-		if (ft_get_time() - t >= time)
-			break ;
-		usleep(500);
-	}
+	ft_print_message(SLEEPING, philo);
+	usleep(philo->data->time_to_sleep * 1000);
 }

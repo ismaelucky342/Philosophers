@@ -6,7 +6,7 @@
 #    By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#              #
-#    Updated: 2024/12/03 22:52:27 by ismherna         ###   ########.fr        #
+#    Updated: 2024/12/11 02:33:37 by ismherna         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,14 +22,15 @@ CC =			gcc
 
 CFLAGS =		-Wall -Werror -Wextra
 
-SRC_FILES =		philo_bonus.c \
-				utils/ft_atol.c \
+SRC_FILES =		main.c \
+				utils/ft_error.c \
 				utils/ft_get_time.c \
 				utils/ft_error.c \
 				utils/ft_usleep.c \
+				utils/ft_get_number.c \
 				init_bonus.c \
+				parse_bonus.c \
 				routines_bonus.c \
-				output_bonus.c \
 
 OBJS = $(SRC_FILES:.c=.o)
 
