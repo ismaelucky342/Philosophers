@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_routine_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbiodies <rbiodies@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/06 12:18:11 by rbiodies          #+#    #+#             */
-/*   Updated: 2021/12/09 16:29:17 by rbiodies         ###   ########.fr       */
+/*   Created: 2024/08/06 12:18:11 by ismherna          #+#    #+#             */
+/*   Updated: 2024/12/11 16:57:02 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	*ft_wait(void *philo_v)
 		time_without_eating = ft_current_time() - philo->last_eat;
 		if (time_without_eating > philo->d->time_to_die)
 		{
-			ft_print_message(philo->d, philo->pid, "died");
+			ft_output(philo->d, philo->pid, R "has died" RE);
 			sem_post(philo->d->somebody_dead);
 			return (NULL);
 		}
@@ -36,14 +36,14 @@ static void	*ft_wait(void *philo_v)
 static void	ft_take_forks(t_philo *philo)
 {
 	sem_wait(philo->d->fork);
-	ft_print_message(philo->d, philo->pid, "has taken a fork");
+	ft_output(philo->d, philo->pid, B "has taken a fork" RE);
 	sem_wait(philo->d->fork);
-	ft_print_message(philo->d, philo->pid, "has taken a fork");
+	ft_output(philo->d, philo->pid, B "has taken a fork" RE);
 }
 
 static void	ft_eat(t_philo *philo)
 {
-	ft_print_message(philo->d, philo->pid, "is eating");
+	ft_output(philo->d, philo->pid, RE "is eating" RE);
 	philo->last_eat = ft_current_time();
 	ft_usleep(philo->d->time_to_eat);
 	philo->count_eat++;
@@ -54,11 +54,11 @@ static void	ft_eat(t_philo *philo)
 
 static void	ft_sleep(t_philo *philo)
 {
-	ft_print_message(philo->d, philo->pid, "is sleeping");
+	ft_output(philo->d, philo->pid, Y "is sleeping" RE);
 	sem_post(philo->d->fork);
 	sem_post(philo->d->fork);
 	ft_usleep(philo->d->time_to_sleep);
-	ft_print_message(philo->d, philo->pid, "is thinking");
+	ft_output(philo->d, philo->pid, MG "is thinking" RE);
 }
 
 int	ft_routine(void *philo_v)

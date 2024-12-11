@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcpy.c                                        :+:      :+:    :+:   */
+/*   ft_current_time.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbiodies <rbiodies@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/06 16:06:32 by rbiodies          #+#    #+#             */
-/*   Updated: 2021/12/06 16:08:11 by rbiodies         ###   ########.fr       */
+/*   Created: 2024/12/11 16:50:32 by ismherna          #+#    #+#             */
+/*   Updated: 2024/12/11 16:50:39 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_bonus.h"
+#include "../philo_bonus.h"
 
-int	ft_strcpy(char *dst, const char *src)
+long long	ft_current_time(void)
 {
-	int	i;
+	struct timeval	current_time;
+	long long		ms;
 
-	i = 0;
-	while (src[i])
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = 0;
-	return (i);
+	gettimeofday(&current_time, NULL);
+	ms = (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000);
+	return (ms);
 }

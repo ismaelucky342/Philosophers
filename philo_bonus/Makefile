@@ -6,7 +6,7 @@
 #    By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#              #
-#    Updated: 2024/12/11 14:26:40 by ismherna         ###   ########.fr        #
+#    Updated: 2024/12/11 17:28:48 by ismherna         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,17 +20,17 @@ NAME =			philo_bonus
 
 CC =			gcc
 
-CFLAGS =		-Wall -Werror -Wextra -g3 -fsanitize=thread
+CFLAGS =		-Wall -Werror -Wextra #-fsanitize=thread -pthrea 
 
 SRC_FILES =		main.c \
 				utils/ft_atol.c \
 				utils/ft_error_msg.c \
-				utils/ft_get_time.c \
-				utils/ft_strlen.c \
+				utils/ft_current_time.c \
+				utils/ft_strcpy.c \
 				utils/ft_usleep.c \
-				ft_hitman.c \
+				routine_bonus.c \
 				init_bonus.c \
-				simulation_bonus.c \
+				parsing_bonus.c \
 				output_bonus.c \
 
 OBJS = $(SRC_FILES:.c=.o)

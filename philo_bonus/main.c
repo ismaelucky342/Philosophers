@@ -5,41 +5,112 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/16 18:37:37 by ismherna          #+#    #+#             */
-/*   Updated: 2024/12/11 14:11:27 by ismherna         ###   ########.fr       */
+/*   Created: 2024/08/05 18:36:19 by ismherna          #+#    #+#             */
+/*   Updated: 2024/12/11 17:26:23 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-static void	parse_check(int argc, char **argv)
+static int	ft_free(t_data *d)
 {
 	int		i;
-	long	num;
+	char	name[255];
 
 	i = 0;
-	if (argc < 5 || argc > 6)
-		error_message("[Argument Count ERROR]\n", 1);
-	while (++i < argc)
+	while (i < d->num_of_philo)
+		kill(d->philo[i++].id, SIGKILL);
+	sem_unlink("fork");
+	sem_unlink("print");
+	sem_unlink("mutex");
+	sem_unlink("somebody_dead");
+	if (d->philo)
 	{
-		num = ft_atol(argv[i]);
-		if (i == 1 && (num < 1 || num > PHILOS_MAX_NUMBER))
-			error_message("[Argument ERROR]\n", 1);
-		else if (i == 5 && (num < 1 || num > INT_MAX))
-			error_message("[Argument ERROR]\n", 1);
-		else if (i != 1 && i != 5 && (num < 1 || num > INT_MAX))
-			error_message("[Argument ERROR]\n", 1);
+		i = 0;
+		while (i < d->num_of_philo)
+		{
+			ft_sem_name("stop_eat", (char *)name, i++);
+			sem_unlink(name);
+		}
+		free(d->philo);
 	}
+	return (1);
+}
+
+static void	*ft_monitor(void *d_v)
+{
+	t_data	*d;
+	int		i;
+
+	d = (t_data *)d_v;
+	i = 0;
+	while (i < d->num_of_philo)
+	{
+		sem_wait(d->philo[i].stop_eat);
+		i++;
+	}
+	sem_wait(d->print);
+	printf(G2 "(%lld) [All philosophers eat %d times!]\n" RE, ft_current_time() \
+	- d->time_start, d->num_of_times_each_philo_must_eat);
+	sem_post(d->somebody_dead);
+	printf(G2 "[PHILOSOPERS BONUS HAS ENDED SUCCESSFULLY]\n" RE);
+	return (NULL);
+}
+
+static int	ft_start_process(t_data *d)
+{
+	pthread_t	tid;
+	int			i;
+
+	if (d->num_of_times_each_philo_must_eat > -1)
+	{
+		if (pthread_create(&tid, NULL, &ft_monitor, (void *)d) != 0)
+			return (1);
+		pthread_detach(tid);
+	}
+	d->time_start = ft_current_time();
+	i = 0;
+	while (i < d->num_of_philo)
+	{
+		d->philo[i].id = fork();
+		if (d->philo[i].id < 0)
+			return (1);
+		else if (d->philo[i].id == 0)
+		{
+			ft_routine(&d->philo[i]);
+			exit(0);
+		}
+		usleep(100);
+		i++;
+	}
+	return (0);
 }
 
 int	main(int argc, char **argv)
 {
-	t_engine	*engine;
+	t_data	d;
 
-	parse_check(argc, argv);
-	engine = init_engine(ft_atol(argv[1]));
-	init_philos(engine, argv, engine->philo_count);
-	launcher(engine, engine->philo_count);
-	ft_hitman(engine, NULL, true, EXIT_SUCCESS);
+	if (argc == 5 || argc == 6)
+	{
+		if (ft_parsing(argc, argv, &d) == 1)
+		{
+			write(1, R "ERROR: Invalid arguments\n" RE, 18);
+			return (0);
+		}
+		if (ft_init(&d) == 1)
+		{
+			write(1, R "ERROR: Wrong malloc or semaphore\n" RE, 26);
+			return (ft_free(&d));
+		}
+		if (ft_start_process(&d) == 1)
+		{
+			write(1, R "ERROR: Process error\n" RE, 15);
+			return (ft_free(&d));
+		}
+		sem_wait(d.somebody_dead);
+		ft_free(&d);
+	}
+	else
+		return (ft_error_arg(argc));
 	return (0);
 }

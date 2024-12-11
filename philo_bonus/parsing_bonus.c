@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_parsing_bonus.c                                 :+:      :+:    :+:   */
+/*   parsing_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbiodies <rbiodies@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/06 11:11:38 by rbiodies          #+#    #+#             */
-/*   Updated: 2021/12/08 11:29:02 by rbiodies         ###   ########.fr       */
+/*   Created: 2024/08/06 11:11:38 by ismherna          #+#    #+#             */
+/*   Updated: 2024/12/11 17:12:14 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,14 @@ int	ft_parsing(int argc, char **argv, t_data *d)
 {
 	if (ft_check_digits(argc, argv) == 1)
 		return (1);
-	d->num_of_philo = ft_atoi(argv[1]);
-	d->time_to_die = ft_atoi(argv[2]);
-	d->time_to_eat = ft_atoi(argv[3]);
-	d->time_to_sleep = ft_atoi(argv[4]);
+	if (argc < 5)
+		return (1); // Add a check to ensure that there are at least 5 command-line arguments
+	d->num_of_philo = ft_atol(argv[1]);
+	d->time_to_die = ft_atol(argv[2]);
+	d->time_to_eat = ft_atol(argv[3]);
+	d->time_to_sleep = ft_atol(argv[4]);
 	if (argc == 6)
-		d->num_of_times_each_philo_must_eat = ft_atoi(argv[5]);
+		d->num_of_times_each_philo_must_eat = ft_atol(argv[5]);
 	else
 		d->num_of_times_each_philo_must_eat = -1;
 	if (d->num_of_philo <= 0 || d->time_to_die <= 0 \

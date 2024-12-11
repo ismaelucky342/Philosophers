@@ -8,6 +8,7 @@
 		"limits": "c",
 		"philo_lib.h": "c",
 		"philo.h": "c",
-		"philosophers.h": "c"
+		"philosophers.h": "c",
+		"philo_bonus.h": "c"
 	}
 }

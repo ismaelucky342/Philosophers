@@ -1,22 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_get_time.c                                      :+:      :+:    :+:   */
+/*   ft_strcpy_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/11 14:02:38 by ismherna          #+#    #+#             */
-/*   Updated: 2024/12/11 14:05:10 by ismherna         ###   ########.fr       */
+/*   Created: 2024/08/06 16:06:32 by ismherna          #+#    #+#             */
+/*   Updated: 2024/12/11 16:46:45 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo_bonus.h"
 
-size_t	ft_get_time(void)
+int	ft_strcpy(char *dst, const char *src)
 {
-	t_timeval	time;
+	int	i;
 
-	if (gettimeofday(&time, NULL) == -1)
-		error_message("[gettimeofday ERROR]\n", 1);
-	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+	i = 0;
+	while (src[i])
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = 0;
+	return (i);
 }

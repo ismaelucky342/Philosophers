@@ -5,18 +5,18 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/11 14:03:22 by ismherna          #+#    #+#             */
-/*   Updated: 2024/12/11 14:03:36 by ismherna         ###   ########.fr       */
+/*   Created: 2024/12/11 16:50:12 by ismherna          #+#    #+#             */
+/*   Updated: 2024/12/11 16:50:19 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo_bonus.h"
 
-void	ft_usleep(size_t ms)
+void	ft_usleep(int time_action)
 {
-	size_t	start;
+	long	start;
 
-	start = ft_get_time();
-	while (ft_get_time() - start < ms)
-		usleep(100);
+	start = ft_current_time();
+	while (ft_current_time() < start + time_action)
+		usleep(10);
 }
