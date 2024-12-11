@@ -5,54 +5,92 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#             */
-/*   Updated: 2024/12/04 00:16:03 by ismherna         ###   ########.fr       */
+/*   Created: 2024/08/16 18:39:41 by dapetros          #+#    #+#             */
+/*   Updated: 2024/12/11 13:50:41 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_BONUS_H
 # define PHILO_BONUS_H
 
-# include "semaphore.h"
-# include <fcntl.h>
-# include <pthread.h>
-# include <signal.h>
 # include <stdio.h>
+# include <signal.h>
 # include <stdlib.h>
+# include <fcntl.h>
+# include <limits.h>
+# include <unistd.h>
+# include <pthread.h>
+# include <stdbool.h>
 # include <sys/time.h>
 # include <sys/wait.h>
-# include <unistd.h>
+# include <sys/types.h>
+# include <semaphore.h>
 
-typedef struct s_philosophers
+# define RESET    "\033[0m"
+# define RED      "\033[31m"    /* Red */
+# define GREEN    "\033[32m"    /* Green */
+
+# define DIE_SEM_NAME "/die_sem"
+# define FORK_SEM_NAME "/fork_sem"
+# define MEAL_SEM_NAME "/meal_sem"
+# define WRITE_SEM_NAME "/write_sem"
+
+# define PHILO_MAX_COUNT 200
+
+typedef pthread_t		t_id;
+typedef pthread_mutex_t	t_mutex;
+typedef struct timeval	t_timeval;
+
+typedef struct s_sems
 {
-	int				num_philos;
-	int				num_forks;
-	int				t_die;
-	int				t_eat;
-	int				t_sleep;
-	int				num_eat;
-	int				num_eat_count;
-	int				stop;
-	int				died;
-	int				*pid;
-	sem_t			*block_printf;
-	sem_t			*block_fork;
-	long long int	t_start;
-	int				index;
-	long long int	t_meal;
-	pthread_t		check_monitor;
-}					t_philosophers;
+	sem_t	*die_sem;
+	sem_t	*fork_sem;
+	sem_t	*meal_sem;
+	sem_t	*write_sem;
+}	t_sems;
 
-// init
-t_philosophers		*init_philo(int argc, char **argv);
+typedef struct s_times
+{
+	size_t	die;
+	size_t	eat;
+	size_t	sleep;
+	size_t	last_meal;
+	size_t	born_time;
+}	t_times;
 
-// unity
-void				philo_start(t_philosophers *philo);
-void				*check_monitor(void *args);
+typedef struct s_philo
+{
+	int			id;
+	t_sems		*sems;
+	t_times		times;
+	int			must_eat;
+	int			meals_eaten;
+	int			philo_count;
+}	t_philo;
 
-int					ft_atol(const char *str);
-int					ft_error(char *str);
-long long			ft_get_time(void);
-void				ft_usleep(long long time, t_philosophers *philo);
-void				philo_print(t_philosophers *philo, char *str);
-#endif
+typedef struct s_engine
+{
+	t_sems	*sems;
+	t_philo	**philos;
+	pid_t	*proc_ids;
+	int		philo_count;
+}	t_engine;
+
+
+void		init_philos(t_engine *engine, char **argv, int count);
+void		init_sems(t_engine *engine, t_sems *sems, int count);
+t_engine	*init_engine(int count);
+void	*die_checker(void *ptr);
+void	*meal_checker(void *ptr);
+void	philo_routine(t_philo *philo);
+void	start_simulation(t_philo *philo);
+void	launcher(t_engine *engine, int count);
+void	error_message(char *text, int signal);
+void	destroy_all(t_engine *engine, char *str, bool isParentProc, int signal);
+void	print_action(t_philo *philo, char *action);
+size_t	get_current_time(void);
+void	ft_usleep(size_t mls);
+size_t	ft_strlen(const char *str);
+long	ft_atoi(const char *str);
+
+#endif   /* PHILO_BONUS_H */

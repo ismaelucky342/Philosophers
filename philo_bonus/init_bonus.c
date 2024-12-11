@@ -5,59 +5,78 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#             */
-/*   Updated: 2024/12/04 00:13:40 by ismherna         ###   ########.fr       */
+/*   Created: 2024/12/11 13:45:37 by ismherna          #+#    #+#             */
+/*   Updated: 2024/12/11 13:47:42 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-static t_philosophers	*init_data(int argc, char **argv)
+void	init_philos(t_engine *engine, char **argv, int count)
 {
-	t_philosophers	*tmp;
+	t_philo	**philos;
+	int		i;
 
-	tmp = (t_philosophers *)malloc(sizeof(t_philosophers));
-	if (!tmp)
-		ft_error("Error: Failed to malloc philo");
-	tmp->num_philos = ft_atol(argv[1]);
-	tmp->num_forks = tmp->num_philos;
-	tmp->t_die = ft_atol(argv[2]);
-	tmp->t_eat = ft_atol(argv[3]);
-	tmp->t_sleep = ft_atol(argv[4]);
-	if (tmp->num_philos < 1 || tmp->num_philos > 250 || tmp->t_die == -1 || \
-		tmp->t_eat == -1 || tmp->t_sleep == -1)
-		ft_error("Error: Wrong arguments");
-	tmp->num_eat = -1;
-	if (argc == 6)
+	i = -1;
+	philos = engine->philos;
+	while (++i < count)
 	{
-		tmp->num_eat = ft_atol(argv[5]);
-		if (tmp->num_eat == -1)
-			ft_error("Error: Wrong arguments");
+		philos[i] = (t_philo *)malloc(sizeof(t_philo));
+		if (!philos[i])
+			destroy_all(engine, "[Malloc ERROR]\n", true, EXIT_FAILURE);
+		philos[i]->id = i + 1;
+		philos[i]->sems = engine->sems;
+		philos[i]->times.die = ft_atoi(argv[2]);
+		philos[i]->times.eat = ft_atoi(argv[3]);
+		philos[i]->times.sleep = ft_atoi(argv[4]);
+		philos[i]->times.last_meal = get_current_time();
+		philos[i]->times.born_time = get_current_time();
+		philos[i]->must_eat = -1;
+		if (argv[5])
+			philos[i]->must_eat = ft_atoi(argv[5]);
+		philos[i]->meals_eaten = 0;
+		philos[i]->philo_count = count;
 	}
-	tmp->num_eat_count = 0;
-	tmp->stop = 0;
-	tmp->died = 0;
-	return (tmp);
 }
 
-t_philosophers	*init_philo(int argc, char **argv)
+void	init_sems(t_engine *engine, t_sems *sems, int count)
 {
-	t_philosophers	*tmp;
+	sems->die_sem = sem_open(DIE_SEM_NAME, O_CREAT | O_EXCL, 0644, 1);
+	sems->fork_sem = sem_open(FORK_SEM_NAME, O_CREAT | O_EXCL, 0644, count);
+	sems->meal_sem = sem_open(MEAL_SEM_NAME, O_CREAT | O_EXCL, 0644, 0);
+	sems->write_sem = sem_open(WRITE_SEM_NAME, O_CREAT | O_EXCL, 0644, 1);
+	if (sems->die_sem == SEM_FAILED || sems->fork_sem == SEM_FAILED
+		|| sems->meal_sem == SEM_FAILED || sems->write_sem == SEM_FAILED)
+		destroy_all(engine, "[Semaphore Open ERROR]\n", true, EXIT_FAILURE);
+	if (sem_unlink(DIE_SEM_NAME) == -1 || sem_unlink(FORK_SEM_NAME) == -1
+		|| sem_unlink(MEAL_SEM_NAME) == -1 || sem_unlink(WRITE_SEM_NAME) == -1)
+		destroy_all(engine, "[Semaphore Unlink ERROR]\n", true, EXIT_FAILURE);
+}
 
-	if (argc < 5 || argc > 6)
-		ft_error("Error: Wrong number of arguments");
-	tmp = init_data(argc, argv);
-	tmp->pid = (int *)malloc(sizeof(int) * tmp->num_forks);
-	if (!tmp->pid)
-		ft_error("Error: malloc error (init pid)");
-	sem_unlink("/block_print");
-	sem_unlink("/block_forks");
-	tmp->block_printf = sem_open("/block_print", O_CREAT, 0644, 1);
-	tmp->block_fork = sem_open("/block_forks", O_CREAT, \
-								0644, tmp->num_forks);
-	if (tmp->block_printf == SEM_FAILED || tmp->block_fork == SEM_FAILED)
-		ft_error("Error: semaphore open error");
-	if (tmp->block_printf == NULL || tmp->block_fork == NULL)
-		ft_error("Error: semaphore initialization error");
-	return (tmp);
+t_engine	*init_engine(int count)
+{
+	t_engine	*engine;
+	t_philo		**philos;
+	pid_t		*proc_ids;
+	t_sems		*sems;
+	int			i;
+
+	i = -1;
+	engine = (t_engine *)malloc(sizeof(t_engine));
+	philos = (t_philo **)malloc(sizeof(t_philo *) * count);
+	proc_ids = (pid_t *)malloc(sizeof(pid_t) * count);
+	sems = (t_sems *)malloc(sizeof(t_sems));
+	if (!engine || !philos || !proc_ids || !sems)
+		destroy_all(engine, "[Malloc ERROR]\n", false, EXIT_FAILURE);
+	engine->sems = sems;
+	engine->philos = philos;
+	engine->proc_ids = proc_ids;
+	engine->philo_count = count;
+	while (++i < count)
+	{
+		proc_ids[i] = -1;
+		philos[i] = NULL;
+	}
+	init_sems(engine, sems, count);
+	return (engine);
 }
