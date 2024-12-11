@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+         #
+#    By: apollo <apollo@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#              #
-#    Updated: 2024/12/11 02:33:37 by ismherna         ###   ########.fr        #
+#    Updated: 2024/12/04 15:20:07 by apollo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,17 +20,16 @@ NAME =			philo_bonus
 
 CC =			gcc
 
-CFLAGS =		-Wall -Werror -Wextra
+CFLAGS =		-Wall -Werror -Wextra -g3 -fsanitize=thread -pthread
 
-SRC_FILES =		main.c \
-				utils/ft_error.c \
+SRC_FILES =		philo_bonus.c \
+				utils/ft_atol.c \
 				utils/ft_get_time.c \
 				utils/ft_error.c \
 				utils/ft_usleep.c \
-				utils/ft_get_number.c \
 				init_bonus.c \
-				parse_bonus.c \
 				routines_bonus.c \
+				output_bonus.c \
 
 OBJS = $(SRC_FILES:.c=.o)
 

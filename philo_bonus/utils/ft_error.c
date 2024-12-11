@@ -5,18 +5,21 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/11 02:18:51 by ismherna          #+#    #+#             */
-/*   Updated: 2024/12/11 02:34:04 by ismherna         ###   ########.fr       */
+/*   Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#             */
+/*   Updated: 2024/12/03 23:58:58 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo.h"
+#include "../philo_bonus.h"
 
-int	ft_error_msg(t_simulation *simulation, char *message, int ret)
+int	ft_error(char *str)
 {
-	if (simulation)
-		if (simulation->forks)
-			free(simulation->forks);
-	printf("%s\n", message);
-	return (ret);
+	int	i;
+
+	i = 0;
+	while (*(str + i))
+		i++;
+	write(2, str, i);
+	write(2, "\n", 1);
+	exit(0);
 }
