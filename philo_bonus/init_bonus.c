@@ -6,11 +6,12 @@
 /*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 11:17:10 by ismherna          #+#    #+#             */
-/*   Updated: 2024/12/11 17:42:01 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/12/13 20:06:36 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
+
 static int	ft_init_semaphores(t_data *d)
 {
 	sem_unlink("fork");

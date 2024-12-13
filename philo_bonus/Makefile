@@ -6,7 +6,7 @@
 #    By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#              #
-#    Updated: 2024/12/11 17:28:48 by ismherna         ###   ########.fr        #
+#    Updated: 2024/12/13 19:54:24 by ismherna         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ NAME =			philo_bonus
 
 CC =			gcc
 
-CFLAGS =		-Wall -Werror -Wextra #-fsanitize=thread -pthrea 
+CFLAGS =		-Wall -Werror -Wextra  -g3#-fsanitize=address
 
 SRC_FILES =		main.c \
 				utils/ft_atol.c \
