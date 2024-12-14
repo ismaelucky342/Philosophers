@@ -6,7 +6,7 @@
 /*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 11:17:10 by ismherna          #+#    #+#             */
-/*   Updated: 2024/12/13 20:06:36 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/12/14 14:58:32 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ static int	ft_init_semaphores(t_data *d)
 	d->mutex = sem_open("mutex", O_CREAT | O_EXCL, 0644, 1);
 	sem_unlink("somebody_dead");
 	d->somebody_dead = sem_open("somebody_dead", O_CREAT | O_EXCL, 0644, 0);
-	if (d->fork == SEM_FAILED || d->print == SEM_FAILED || d->mutex == SEM_FAILED || d->somebody_dead == SEM_FAILED)
+	if (d->fork == SEM_FAILED || d->print == SEM_FAILED
+		|| d->mutex == SEM_FAILED || d->somebody_dead == SEM_FAILED)
 		return (1);
 	return (0);
 }

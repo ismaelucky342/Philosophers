@@ -6,7 +6,7 @@
 #    By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/22 21:37:15 by ismherna          #+#    #+#              #
-#    Updated: 2024/12/14 14:46:05 by ismherna         ###   ########.fr        #
+#    Updated: 2024/12/14 15:03:13 by ismherna         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRC_FILES =		main.c \
 				utils/ft_usleep.c \
 				routine_bonus.c \
 				init_bonus.c \
+				ft_free.c \
 				parsing_bonus.c \
 				output_bonus.c \
 

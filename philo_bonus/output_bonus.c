@@ -6,12 +6,11 @@
 /*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:53:13 by ismherna          #+#    #+#             */
-/*   Updated: 2024/12/11 16:57:02 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/12/14 14:58:53 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-
 
 void	ft_output(t_data *d, int pid, char *msg)
 {

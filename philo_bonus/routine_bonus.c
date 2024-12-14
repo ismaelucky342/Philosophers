@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_routine_bonus.c                                 :+:      :+:    :+:   */
+/*   routine_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:18:11 by ismherna          #+#    #+#             */
-/*   Updated: 2024/12/11 16:57:02 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/12/14 14:58:44 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ static void	ft_eat(t_philo *philo)
 	philo->last_eat = ft_current_time();
 	ft_usleep(philo->d->time_to_eat);
 	philo->count_eat++;
-	if (philo->d->num_of_times_each_philo_must_eat != -1 && \
-	philo->count_eat == philo->d->num_of_times_each_philo_must_eat)
+	if (philo->d->num_of_times_each_philo_must_eat != -1
+		&& philo->count_eat == philo->d->num_of_times_each_philo_must_eat)
 		sem_post(philo->stop_eat);
 }
 
@@ -63,7 +63,7 @@ static void	ft_sleep(t_philo *philo)
 
 int	ft_routine(void *philo_v)
 {
-	t_philo		*philo;
+	t_philo	*philo;
 
 	philo = (t_philo *)philo_v;
 	if (pthread_create(&philo->wait, NULL, &ft_wait, philo) != 0)

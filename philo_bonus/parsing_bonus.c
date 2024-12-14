@@ -6,7 +6,7 @@
 /*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 11:11:38 by ismherna          #+#    #+#             */
-/*   Updated: 2024/12/11 17:12:14 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/12/14 15:01:45 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static int	ft_check_digits(int argc, char **argv)
 {
-	int		i;
-	int		j;
+	int	i;
+	int	j;
 
 	i = 1;
 	j = 0;
@@ -38,7 +38,7 @@ int	ft_parsing(int argc, char **argv, t_data *d)
 	if (ft_check_digits(argc, argv) == 1)
 		return (1);
 	if (argc < 5)
-		return (1); // Add a check to ensure that there are at least 5 command-line arguments
+		return (1);
 	d->num_of_philo = ft_atol(argv[1]);
 	d->time_to_die = ft_atol(argv[2]);
 	d->time_to_eat = ft_atol(argv[3]);
@@ -47,9 +47,9 @@ int	ft_parsing(int argc, char **argv, t_data *d)
 		d->num_of_times_each_philo_must_eat = ft_atol(argv[5]);
 	else
 		d->num_of_times_each_philo_must_eat = -1;
-	if (d->num_of_philo <= 0 || d->time_to_die <= 0 \
-	|| d->time_to_eat <= 0 || d->time_to_sleep <= 0 \
-	|| (argv[5] && d->num_of_times_each_philo_must_eat <= 0))
+	if (d->num_of_philo <= 0 || d->time_to_die <= 0 || d->time_to_eat <= 0
+		|| d->time_to_sleep <= 0 || (argv[5]
+			&& d->num_of_times_each_philo_must_eat <= 0))
 		return (1);
 	return (0);
 }
