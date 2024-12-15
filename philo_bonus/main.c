@@ -6,7 +6,7 @@
 /*   By: ismherna <ismherna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 18:36:19 by ismherna          #+#    #+#             */
-/*   Updated: 2024/12/14 15:01:56 by ismherna         ###   ########.fr       */
+/*   Updated: 2024/12/14 17:01:06 by ismherna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,13 @@ static void	*ft_monitor(void *d_v)
 
 static int	ft_start_process(t_data *d)
 {
-	pthread_t	tid;
 	int			i;
+	pthread_t	tid;
 
+	tid = 0;
 	if (d->num_of_times_each_philo_must_eat > -1)
-	{
 		if (pthread_create(&tid, NULL, &ft_monitor, (void *)d) != 0)
 			return (1);
-		pthread_detach(tid);
-	}
 	d->time_start = ft_current_time();
 	i = 0;
 	while (i < d->num_of_philo)
@@ -58,6 +56,7 @@ static int	ft_start_process(t_data *d)
 		usleep(100);
 		i++;
 	}
+	pthread_join(tid, NULL);
 	return (0);
 }
 
