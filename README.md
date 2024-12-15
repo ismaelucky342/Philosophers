@@ -1,14 +1,15 @@
 # Philosophers
+![image](https://github.com/user-attachments/assets/bf5de510-6853-4d9d-8302-0a4dc3279d66)
 
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/e9cec3d6-5d9f-4ad7-984a-ceb9316b178b" alt="image">
-</div>
 
 This project implements the classic solution to the **Dining Philosophers Problem**, where five philosophers sit at a round table. Each philosopher needs two forks (in this case called chopsticks) to eat a plate of spaghetti, and there is one shared chopstick between each pair of plates. Philosophers alternate between **thinking** and **eating**. When they feel hungry, they try to pick up the chopstick on their left, followed by the one on their right. If they manage to pick up both chopsticks, they eat for a short period, then put the chopsticks down and return to thinking.
 
 
 
 # The Project
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/e9cec3d6-5d9f-4ad7-984a-ceb9316b178b" alt="image">
+</div>
 There are two implementations in this project:
 
 - **philo**: uses threads and mutexes for shared resource synchronization.
